@@ -1,0 +1,266 @@
+\documentclass[a4paper,11pt]{article} 
+%last modified: Akos, 8 August 2011
+\usepackage{amsfonts, amsbsy, amsmath, amsthm, amssymb, latexsym}
+%\usepackage{mathrsfs}
+%\usepackage{pdfsync}
+\usepackage[top=34mm,right=34mm,bottom=34mm,left=34mm]{geometry}
+%\usepackage{mathptmx}
+%\usepackage{stmaryrd}
+%\usepackage{bm}
+%\usepackage{eucal}
+%\usepackage{pslatex}
+\usepackage{fancyhdr}
+
+%\usepackage{showkeys}
+
+%\usepackage{setspace}
+%\usepackage[all]{xy}
+%\topmargin=-6mm \textheight=230mm \textwidth=145mm
+\headheight=14pt
+%\DeclareMathAlphabet{\bm}{OT1}{ptm}{b}{it}
+%\renewcommand{\baselinestretch}{1.3}
+
+\def\hal{\unskip\nobreak\hfill\penalty50\hskip10pt\hbox{}\nobreak
+
+\hfill\vrule height 5pt width 6pt depth 1pt\par\vskip 2mm}
+
+\parskip 1mm
+
+\def\thefootnote{\fnsymbol{footnote}}
+
+\def\Soc{\operatorname{Soc\,}}
+\def\GF{\operatorname{GF\,}}
+\def\Tr{\operatorname{Tr\,}}
+\def\GL{\operatorname{GL}}
+\def\I{\operatorname{I}}
+\def\GaL{\operatorname{\G L}}
+\def\AGL{\operatorname{AGL}}
+\def\ASL{\operatorname{ASL}}
+\def\AGaL{\operatorname{A\G L\,}}
+\def\SL{\operatorname{SL}}
+\def\SO{\operatorname{SO}}
+\def\po{\operatorname{P\Omega}}
+\def\PGL{\operatorname{PGL}}
+\def\PGaL{\operatorname{P\G L}}
+\def\PG{\operatorname{PG}}
+\def\PSL{\operatorname{PSL}}
+\def\PSiL{\operatorname{P\Si L}}
+\def\Sp{\operatorname{Sp}}
+\def\PSp{\operatorname{PSp}}
+\def\Sz{\operatorname{Sz\,}}
+\def\SU{\operatorname{SU\,}}
+\def\PSU{\operatorname{PSU\,}}
+\def\GaL{\operatorname{\G L}}
+\newcommand{\Sym}{{\rm Sym}} 
+\newcommand{\Alt}{{\rm Alt}} 
+\newcommand{\Aut}{{\rm Aut}}
+\newcommand{\stab}{{\rm stab}}
+\newcommand{\Inn}{{\rm Inn}}
+\newcommand{\soc}{{\rm soc}}
+\newcommand{\fix}{{\rm fix}}
+\newcommand{\rad}{{\rm rad}}
+\newcommand{\mindeg}{{\rm mindeg}}
+\newcommand{\Cl}{{\rm Cl}}
+\newcommand{\GAP}{{\sl {GAP}}}
+\def\ve{\varepsilon}
+\def\Rad{{\rm Rad}}
+
+%\pagestyle{fancy}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}} 
+%\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+%\fancyhead[RE]{\em \leftmark}
+%\fancyhead[LO]{\em \rightmark}
+%\fancyhead[LE,RO]{\thepage}
+%\lfoot{}
+%\cfoot{}
+%\rfoot{}
+
+%\pagestyle{fancy}
+%\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}} 
+%\lhead{\em \leftmark}
+%\chead{}
+%\rhead{\thepage}
+%\lfoot{}
+%\cfoot{}
+%\rfoot{}
+
+%\renewcommand{\bibname}{References}
+%\setcounter{tocdepth}{2}
+
+\renewcommand{\a}{\alpha}
+\renewcommand{\b}{\beta}
+\newcommand{\im}{\mathrm{Im}}
+\newcommand{\Ker}{\mathrm{Ker}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\eval}{\mathrm{eval}}
+\newcommand{\FFF}{\mathbb{F}_{q^2}}
+\renewcommand{\v}{\varphi} \newcommand{\e}{\varepsilon}
+\renewcommand{\bf}{\textbf} \renewcommand{\L}{\Lambda}
+\renewcommand{\l}{\lambda} \renewcommand{\O}{\Omega}
+\renewcommand{\v}{\varphi} \newcommand{\z}{\mathbb{Z}}
+\newcommand{\into}{\hookrightarrow} \renewcommand{\to}{\rightarrow}
+\newcommand{\too}{\longrightarrow} \newcommand{\s}{\sigma}
+\renewcommand{\o}{\circ} \newcommand{\T}{\Theta}
+\newcommand{\h}{H^{0}} \newcommand{\C}{\mathcal{C}}
+\newcommand{\G}{\bar{G}} \newcommand{\E}{\mathcal{E}}
+\newcommand{\D}{\bar{D}}
+\renewcommand{\H}{\bar{H}} \newcommand{\ms}{\mathcal{S}}
+\newcommand{\B}{\bar{B}}
+\renewcommand{\sb}{\mathscr{B}}
+\newcommand{\mS}{\mathfrak{S}}
+\newcommand{\sm}{\small}
+\newcommand{\ns}{\normalsize}
+\newcommand{\leqs}{\leqslant}
+\newcommand{\geqs}{\geqslant}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\perps}{\vdash} \newcommand{\wtilde}{\widetilde}
+\newcommand{\what}{\widehat} \newcommand{\ub}{\underline{b}}
+\newcommand{\ds}{\displaystyle} \newcommand{\vs}{\vspace{3mm}}
+\newcommand{\hh}{\hspace{5mm}} \newcommand{\vsp}{\vspace{2mm}}
+\newcommand{\hhh}{\hspace{3.5mm}}
+\newcommand{\fpr}{\mbox{{\rm fpr}}(x,\O)}
+\def\ndiv{ {\not\kern-.5pt\hbox{\big |}\,} }
+
+\newtheorem{theorem}{Theorem} 
+\newtheorem{lemma}{Lemma}
+\newtheorem{propn}{Proposition}
+\newtheorem{remk}{Remark} 
+\newtheorem{corol}{Corollary}
+\newtheorem{ex}{Example}
+\newtheorem{definition}{Definition}
+\newtheorem*{nota}{Notation}
+\newtheorem{thm}{Theorem}[section] 
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{prop}[thm]{Proposition} 
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary} 
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{cla}[thm]{Claim}
+
+\begin{document}
+
+\title{Constructive recognition of special linear groups in their natural represtation}
+
+\author{Max Neunh\"offer\footnote{\texttt{t.burness@soton.ac.uk}} \\ Department of Mathematics\\ University of St Andrews \\
+St Andrews, UK \\ \and \'Akos Seress\footnote{\texttt{akos@math.ohio-state.edu}  Research partially supported by the NSF and by ARC Grant DP1096525}  \\ School of Mathematics and Statistics \\ University of Western Australia \\ Crawley, WA 6009, Australia \\ and  Department of Mathematics \\ The Ohio State University \\ Columbus, OH 43210, USA}
+
+\date{}
+\maketitle
+
+
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+\label{introduction}
+A recent active area of computational group theory is the so-called
+{\em matrix group recognition project}. Let $V$ be a finite dimensional vector space over a finite field $\GF(q)$. Given $G =\langle X \rangle \le \GL(V)$, the goal is to compute quantitative and structural information about $G$ such as the order, a composition series, and important characteristic subgroups like the largest solvable normal subgroup of $G$. 
+
+All practical algorithms for matrix group recognition \cite{LG99}, \cite{NS06}, \cite{OB09} use a tree-like structure of homomorphisms to divide the input group $G$ into smaller factors, solve the basic algorithmmic problems in the factors, and then combine the results for the entire group $G$. This divide-and-conquer approach bottoms out when we reach a leaf node in the tree-like data structure, i.e., a quasisimple matrix group where there is no homomorphism breaking the group into significantly smaller pieces exists. 
+
+In a leaf node, the basic task is the {\em constructive recognition} of the group $H$ at hand. This means the construction of a homomorphism $\lambda: H \to C$, where $C$ is a natural copy of $H$; in the case of classical groups, $C$ is simply the smallest dimensional matrix representation. The homomorphism $\lambda$ must be effective in the sense that for any $h \in H$, we must be able to construct $h\lambda$ and for any $c \in C$, we must be able to compute a representative in $c\lambda^{-1}$. A key part of this procedure is to solve the {\em constructive membership problem} in $C$. This means the construction of a ``nice'' generating set $Y$ for $C$ and setting up a data structure so that for any $g \in C$, there is a fast algorithm to write a straight-line program reaching $g$ from $Y$. Recall that a {\em straight-line program} (SLP) reaching $g$ from $Y$ is a series of expressions $w_1,w_2,\ldots,w_m$ so that 
+\begin{itemize}
+\item Each $w_j$ is a symbol for an element of $Y$, or $w_j=(w_k,w_{\ell})$ for some $k,\ell <j$, or $w_j=(w_k,-1)$ for some $k<j$.
+\item The evaluated value of $w_m$ is $\eval(w_m)=g$.
+\end{itemize}
+We evaluate SLPs the natural way: if $w_j=(w_k,w_{\ell})$ then $\eval(w_j)=\eval(w_k) \cdot \eval(w_{\ell})$ and if $w_j=(w_k,-1)$ then $\eval(w_j)=(\eval(w_k))^{-1}$. 
+
+The present paper solves the constructive membership problem in the groups $\SL(d,q)$, given as $G = \langle X \rangle \le \GL(V)$, for a $d$-dimensional vector space $V$ over $\GF(q)$. To describe the output of the algorithm, we need the following notation. 
+
+Let $q=p^e$ for some prime $p$. For a basis $B=(b_1,b_2,\ldots,b_d)$ of $V$ and $\alpha \in \GF(q)$, let $E_{ij}(\alpha) \in \SL(V)$ be the group element with matrix (in the basis $B$) $M=(m_{k\ell})$ with $m_{k\ell}=1$ if $k=\ell$; 
+$m_{ij}=\alpha$; and all other entries of $M$ equal to $0$. 
+
+\begin{theorem}
+\label{main}
+There exists a Las Vegas algorithm that, given $G = \langle X \rangle \le \GL(V)$ in its natural representation, computes a straight-line program $P$ to 
+a new generating set $Y$ of size $2e+2$, and a base change matrix $S \in \GL(V)$ so that the elements of $Y$ in the new basis $B$ are of the form described below.
+
+The set $Y$ contains $e$ elements of the form $E_{12}(\varepsilon_i)$ and $e$ elements of the form $E_{21}(\varepsilon_i)$ for a $\GF(p)$-basis $\varepsilon_1,\ldots, \varepsilon_e$ of $\GF(q)$. The other two elements of $Y$ are permutation matrices, corresponding to the permutations $(d,d-1,\ldots,1)$ and $(1)(d,d-1,\ldots,2)$ on the coordinates, and the entry $(1,d)$ and $(2,d)$ changed to $-1$ in the case of even $d$ and odd $d$, respectively (to ensure that the matrices represent elements of $\SL(d,q)$).
+
+The length of the straight-line program $P$ is $O(d^2e^2)$. The running time of the algorithm is
+\[
+O(\log d) \xi  +O(d^3e^2 \log p \log d)\mu +\alpha,
+\]
+where $\xi$ is the cost of the construction of a (nearly) uniformly distributed random group element, $\mu$ is the cost of a field operation in $\GF(q)$, and $\alpha$ is the cost of one discrete logarithm compuation in $\GF(q)$.
+\end{theorem}
+
+The random elements are taken in $O(\log^*d)$ different subgroups of $G$, where
+$\log^*d$ is the length of the shortest tower of twos such that 
+$$2^{2^{\cdots ^2}} >d.$$
+
+Recall that a randomized algorithm is {\em Las Vegas} if the output is always correct; the algorithm may report failure, with an error probability less than a bound prescribed by the user.
+
+A key feature of our algorithm is that it works uniformly for all $q$; alternative approaches, based on centralizer of involution computations, have to distinguish between the cases $q$ odd or even (with the case of characteristic $2$ much more complicated than the odd one). The super-fast running time is achieved by manipulating vectors instead of matrices, taking full advantage of the fact that we work with the natural representation. A similar algorithm works for the natural representation of all classical groups; we shall describe this extension in a forthcoming paper. 
+
+The algorithm consists of two parts, of quite different nature. In the first part, we construct a subspace $W \le V$ of dimension $2$, and a subgroup $H \le G$ acting as $\SL(2,q)$ on $W$ and fixing a $(d-2)$-dimensional subspace of $V$. In the second part, we build larger and larger subspaces $W_i$ and nice generators for the groups $\SL(W_i)$, until we reach $\SL(V)$.
+
+\section{Going down}
+\label{going down}
+
+In this section, we describe and analyze the first part of the algorithm, the construction of a subgroup isomorphic to $\SL(2,q)$. First, we present a subroutine that constructs an $\SL(4,q)$-subgroup.
+
+\medskip\noindent
+{\bf {Algorithm:}} \textsc{GoDownTo4Dim}
+
+\noindent
+{\bf {Input:}} $G = \langle X \rangle \cong \SL(V)$.
+\begin{enumerate}
+\item {\bf {assign}} $H := G$ {\bf {and}} $dim := d$;
+\item {\bf {repeat}} 
+\item \hspace*{1cm} $h:=$(pseudo)random$(H)$; $p_h(t):=$characteristic polynomial of $h$; 
+\item \hspace*{1cm} $\{ f_i(t) \}:=$factors of $p_h(t)$;
+\item \hspace*{1cm} {\bf {if}} $\exists f_i(t)$, $k:=\deg(f_i(t)$ relative prime
+to all other $\deg(f_j(t))$ 
+
+ \hspace*{2cm} {\bf {and}} $1<k<2 \log(dim)$ {\bf {then}}
+\item \hspace*{2cm} $\ell:=\prod_{j \ne i} \left(q^{\deg(f_j(t))}-1\right)$
+\item \hspace*{2cm} $g:=h^{\ell}$; $r:=$(pseudo)random$(G)$;
+\item \hspace*{2cm} $H:=\langle g,g^r \rangle$; $dim := 2*k$;
+\item \hspace*{1cm} {\bf {fi}}
+\item {\bf {until}} $dim=4$;
+\item {\bf {if}} $H \cong \SL(4,q)$ {\bf {then}}
+\item \hspace*{1cm} {\bf {output}} $H$;
+\item \hspace*{1cm} {\bf {else output}} ``fail'';
+\item {\bf {fi}}
+\end{enumerate}
+
+
+
+\begin{thebibliography}{999}
+
+\bibitem{Asch}
+M.~Aschbacher, \emph{On the maximal subgroups of the finite classical groups},
+  Invent. Math. \textbf{76} (1984), 469--514.
+  
+\bibitem{Magma}
+W.~Bosma and J.J. Cannon, \emph{Handbook of {{\sc Magma}} functions}, School of
+  Mathematics and Statistics, University of Sydney, Sydney, 1995.
+
+\bibitem{ATLAS}
+J. Conway, R. Curtis, S. Norton, R. Parker, and R. Wilson, \emph{Atlas of
+  {F}inite {G}roups}, Oxford University Press, 1985.
+  
+\bibitem{GAP4}
+The {GAP} Group, \emph{{GAP} -- {G}roups, {A}lgorithms and {P}rogramming}, Version 4.4, 2004.
+
+\bibitem{KL}
+P.B. Kleidman and M.W. Liebeck, \emph{The {S}ubgroup {S}tructure of the
+  {F}inite {C}lassical {G}roups}, London Math. Soc. Lecture Note Series, vol.
+  129, Cambridge University Press, 1990.
+
+\bibitem{Seress}
+{\'A}. Seress, \emph{Permutation {G}roup {A}lgorithms}, Cambridge
+  Tracts in Mathematics, vol. 152, Cambridge University Press, Cambridge, 2003.
+  
+\bibitem{WebAt}
+R.A. Wilson et~al., \emph{A {W}orld-{W}ide-{W}eb {A}tlas of finite group
+  representations}, {\texttt{http://brauer.maths.qmul.ac.uk/Atlas/v3/}}.
+
+
+\end{thebibliography}
+
+\end{document}         
