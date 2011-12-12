@@ -65,6 +65,8 @@
 \def\ve{\varepsilon}
 \def\Rad{{\rm Rad}}
 
+\newcommand{\B}{\mathcal{B}}
+
 %\pagestyle{fancy}
 %\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}} 
 %\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
@@ -106,7 +108,6 @@
 \newcommand{\G}{\bar{G}} \newcommand{\E}{\mathcal{E}}
 \newcommand{\D}{\bar{D}}
 \renewcommand{\H}{\bar{H}} \newcommand{\ms}{\mathcal{S}}
-\newcommand{\B}{\bar{B}}
 \renewcommand{\sb}{\mathscr{B}}
 \newcommand{\mS}{\mathfrak{S}}
 \newcommand{\sm}{\small}
@@ -141,10 +142,13 @@
 
 \begin{document}
 
-\title{Constructive recognition of special linear groups in their natural represtation}
+\title{Constructive recognition of special linear groups in their natural representation}
 
-\author{Max Neunh\"offer\footnote{\texttt{t.burness@soton.ac.uk}} \\ Department of Mathematics\\ University of St Andrews \\
-St Andrews, UK \\ \and \'Akos Seress\footnote{\texttt{akos@math.ohio-state.edu}  Research partially supported by the NSF and by ARC Grant DP1096525}  \\ School of Mathematics and Statistics \\ University of Western Australia \\ Crawley, WA 6009, Australia \\ and  Department of Mathematics \\ The Ohio State University \\ Columbus, OH 43210, USA}
+\author{Max Neunh\"offer\footnote{\texttt{neunhoef@mcs.st-and.ac.uk}} \\
+Mathematical Institute \\
+University of St Andrews\\
+North Haugh \\
+St Andrews, Fife, KY16 9SS\\ Scotland, UK \\ \and \'Akos Seress\footnote{\texttt{akos@math.ohio-state.edu}  Research partially supported by the NSF and by ARC Grant DP1096525}  \\ School of Mathematics and Statistics \\ University of Western Australia \\ Crawley, WA 6009, Australia \\ and  Department of Mathematics \\ The Ohio State University \\ Columbus, OH 43210, USA}
 
 \date{}
 \maketitle
@@ -158,50 +162,134 @@ St Andrews, UK \\ \and \'Akos Seress\footnote{\texttt{akos@math.ohio-state.edu} 
 \section{Introduction}
 \label{introduction}
 A recent active area of computational group theory is the so-called
-{\em matrix group recognition project}. Let $V$ be a finite dimensional vector space over a finite field $\GF(q)$. Given $G =\langle X \rangle \le \GL(V)$, the goal is to compute quantitative and structural information about $G$ such as the order, a composition series, and important characteristic subgroups like the largest solvable normal subgroup of $G$. 
+{\em matrix group recognition project}. Let $V$ be a finite dimensional
+vector space over a finite field $\GF(q)$. Given $G =\langle X \rangle
+\le \GL(V)$, the goal is to compute quantitative and structural
+information about $G$ such as the order, a composition series, and
+important characteristic subgroups like the largest solvable normal
+subgroup of $G$.
 
-All practical algorithms for matrix group recognition \cite{LG99}, \cite{NS06}, \cite{OB09} use a tree-like structure of homomorphisms to divide the input group $G$ into smaller factors, solve the basic algorithmmic problems in the factors, and then combine the results for the entire group $G$. This divide-and-conquer approach bottoms out when we reach a leaf node in the tree-like data structure, i.e., a quasisimple matrix group where there is no homomorphism breaking the group into significantly smaller pieces exists. 
+All practical algorithms for matrix group recognition \cite{LG99},
+\cite{NS06}, \cite{OB09} use a tree-like structure of homomorphisms
+to divide the input group $G$ into smaller factors, solve the basic
+algorithmic problems in the factors, and then combine the results for
+the entire group $G$. This divide-and-conquer approach bottoms out
+when we reach a leaf node in the tree-like data structure, i.e., a
+quasisimple matrix group where there is no homomorphism breaking the
+group into significantly smaller pieces exists.
 
-In a leaf node, the basic task is the {\em constructive recognition} of the group $H$ at hand. This means the construction of a homomorphism $\lambda: H \to C$, where $C$ is a natural copy of $H$; in the case of classical groups, $C$ is simply the smallest dimensional matrix representation. The homomorphism $\lambda$ must be effective in the sense that for any $h \in H$, we must be able to construct $h\lambda$ and for any $c \in C$, we must be able to compute a representative in $c\lambda^{-1}$. A key part of this procedure is to solve the {\em constructive membership problem} in $C$. This means the construction of a ``nice'' generating set $Y$ for $C$ and setting up a data structure so that for any $g \in C$, there is a fast algorithm to write a straight-line program reaching $g$ from $Y$. Recall that a {\em straight-line program} (SLP) reaching $g$ from $Y$ is a series of expressions $w_1,w_2,\ldots,w_m$ so that 
+In a leaf node, the basic task is the {\em constructive recognition} of
+the group $H$ at hand. This means the construction of a homomorphism
+$\lambda: H \to C$, where $C$ is a natural copy of $H$; in the case
+of classical groups, $C$ is simply the smallest dimensional matrix
+representation. The homomorphism $\lambda$ must be effective in the
+sense that for any $h \in H$, we must be able to construct $h\lambda$
+and for any $c \in C$, we must be able to compute a representative in
+$c\lambda^{-1}$. A key part of this procedure is to solve the {\em
+constructive membership problem} in $C$. This means the construction of
+a ``nice'' generating set $Y$ for $C$ and setting up a data structure
+so that for any $g \in C$, there is a fast algorithm to write a
+straight-line program reaching $g$ from $Y$. Recall that a {\em
+straight-line program} (SLP) reaching $g$ from $Y$ is a series of
+expressions $w_1,w_2,\ldots,w_m$ so that
 \begin{itemize}
-\item Each $w_j$ is a symbol for an element of $Y$, or $w_j=(w_k,w_{\ell})$ for some $k,\ell <j$, or $w_j=(w_k,-1)$ for some $k<j$.
+\item Each $w_j$ is a symbol for an element of $Y$, or
+$w_j=(w_k,w_{\ell})$ for some $k,\ell <j$, or $w_j=(w_k,-1)$ for some
+$k<j$.
 \item The evaluated value of $w_m$ is $\eval(w_m)=g$.
 \end{itemize}
-We evaluate SLPs the natural way: if $w_j=(w_k,w_{\ell})$ then $\eval(w_j)=\eval(w_k) \cdot \eval(w_{\ell})$ and if $w_j=(w_k,-1)$ then $\eval(w_j)=(\eval(w_k))^{-1}$. 
+We evaluate SLPs the natural way: if $w_j=(w_k,w_{\ell})$ then
+$\eval(w_j)=\eval(w_k) \cdot \eval(w_{\ell})$ and if $w_j=(w_k,-1)$ then
+$\eval(w_j)=(\eval(w_k))^{-1}$.
 
-The present paper solves the constructive membership problem in the groups $\SL(d,q)$, given as $G = \langle X \rangle \le \GL(V)$, for a $d$-dimensional vector space $V$ over $\GF(q)$. To describe the output of the algorithm, we need the following notation. 
+The present paper solves the constructive membership problem in the
+groups $\SL(d,q)$, given as $G = \langle X \rangle \le \GL(V)$, for a
+$d$-dimensional vector space $V$ over $\GF(q)$. To describe the output
+of the algorithm, we need the following notation.
 
-Let $q=p^e$ for some prime $p$. For a basis $B=(b_1,b_2,\ldots,b_d)$ of $V$ and $\alpha \in \GF(q)$, let $E_{ij}(\alpha) \in \SL(V)$ be the group element with matrix (in the basis $B$) $M=(m_{k\ell})$ with $m_{k\ell}=1$ if $k=\ell$; 
-$m_{ij}=\alpha$; and all other entries of $M$ equal to $0$. 
+Let $q=p^e$ for some prime $p$ and let $(\varepsilon_1, \ldots, \varepsilon_e)$
+be a basis of $\GF(q)$ over $\GF(p)$ such that we can easily express
+elements of $\GF(q)$ as vectors in this basis in practice. 
+For a basis $B=(b_1,b_2,\ldots,b_d)$    
+of $V$ and $\alpha \in \GF(q)$, let $E_{ij}(\alpha) \in \SL(V)$ be      
+the group element with matrix (in the basis $B$) $M=(m_{k\ell})$ with   
+$m_{k\ell}=1$ if $k=\ell$; $m_{ij}=\alpha$; and all other entries of    
+$M$ equal to $0$.                                                       
+
+We first need the definition of standard generators for $\SL(d,q)$:
+
+\begin{definition}[Standard generators for $\SL(n,q)$]
+Let $G = \left< Y \right>$ be a subgroup of $\GL(d,q)$ that is 
+isomorphic to $\SL(n,q)$ and fixes an $d-n$-dimensional subspace $W$ of
+$V$. Then $Y$ is called a \emph{set of standard generators for
+$\SL(n,q)$ with respect to the basis $(v_1, \ldots, v_d)$} of $V$, 
+if it has $2e+2$ elements and contains the following elements:
+\begin{itemize}
+\item for each $1 \le i \le e$ an element of the form $E_{1,2}(\varepsilon_i)$,
+\item for each $1 \le i \le e$ an element of the form $E_{2,1}(\varepsilon_i)$,
+\item a permutation matrix corresponding to the permutation
+$(n,n-1,\ldots,1)$ with the entry $(1,n)$ changed to $-1$ if $n$ is
+even, and
+\item a permutation matrix corresponding to the permutation
+$(n,n-1,\ldots,2)$ with the entry $(2,n)$ changed to $-1$ if $n$ is
+odd.
+\end{itemize}
+The $-1$ entries are of course there to ensure that the elements are
+contained in $\SL(n,q)$.
+\end{definition}
 
 \begin{theorem}
 \label{main}
-There exists a Las Vegas algorithm that, given $G = \langle X \rangle \le \GL(V)$ in its natural representation, computes a straight-line program $P$ to 
-a new generating set $Y$ of size $2e+2$, and a base change matrix $S \in \GL(V)$ so that the elements of $Y$ in the new basis $B$ are of the form described below.
+There exists a Las Vegas algorithm that, given $\SL(d,q) \cong G 
+= \langle X \rangle
+\le \GL(V)$ in its natural representation, computes a straight-line
+program $P$ to a new generating set $Y$ together with a basis
+$\B := (v_1, \ldots, v_d)$ of $V$
+such that $Y$ is a set of standard generators for $\SL(d,q)$ with 
+respect to $\B$.
 
-The set $Y$ contains $e$ elements of the form $E_{12}(\varepsilon_i)$ and $e$ elements of the form $E_{21}(\varepsilon_i)$ for a $\GF(p)$-basis $\varepsilon_1,\ldots, \varepsilon_e$ of $\GF(q)$. The other two elements of $Y$ are permutation matrices, corresponding to the permutations $(d,d-1,\ldots,1)$ and $(1)(d,d-1,\ldots,2)$ on the coordinates, and the entry $(1,d)$ and $(2,d)$ changed to $-1$ in the case of even $d$ and odd $d$, respectively (to ensure that the matrices represent elements of $\SL(d,q)$).
-
-The length of the straight-line program $P$ is $O(d^2e^2)$. The running time of the algorithm is
+The length of the straight-line program $P$ is $O(d^2e^2)$. The running
+time of the algorithm is
 \[
 O(\log d) \xi  +O(d^3e^2 \log p \log d)\mu +\alpha,
 \]
-where $\xi$ is the cost of the construction of a (nearly) uniformly distributed random group element, $\mu$ is the cost of a field operation in $\GF(q)$, and $\alpha$ is the cost of one discrete logarithm compuation in $\GF(q)$.
+where $\xi$ is the cost of the construction of a (nearly) uniformly
+distributed random group element, $\mu$ is the cost of a field operation
+in $\GF(q)$, and $\alpha$ is the cost of one discrete logarithm
+compuation in $\GF(q)$.
 \end{theorem}
 
-The random elements are taken in $O(\log^*d)$ different subgroups of $G$, where
-$\log^*d$ is the length of the shortest tower of twos such that 
-$$2^{2^{\cdots ^2}} >d.$$
+The random elements are taken in $O(\log^*d)$ different subgroups of
+$G$, where $\log^*d$ is the length of the shortest tower of twos such
+that \[2^{2^{\cdots ^2}} >d.\]
 
-Recall that a randomized algorithm is {\em Las Vegas} if the output is always correct; the algorithm may report failure, with an error probability less than a bound prescribed by the user.
+Recall that a randomized algorithm is {\em Las Vegas} if the output
+is always correct; the algorithm may report failure, with an error
+probability less than a bound prescribed by the user.
 
-A key feature of our algorithm is that it works uniformly for all $q$; alternative approaches, based on centralizer of involution computations, have to distinguish between the cases $q$ odd or even (with the case of characteristic $2$ much more complicated than the odd one). The super-fast running time is achieved by manipulating vectors instead of matrices, taking full advantage of the fact that we work with the natural representation. A similar algorithm works for the natural representation of all classical groups; we shall describe this extension in a forthcoming paper. 
+A key feature of our algorithm is that it works uniformly for all $q$;
+alternative approaches, based on centralizer of involution computations,
+have to distinguish between the cases $q$ odd or even (with the case
+of characteristic $2$ much more complicated than the odd one). The
+super-fast running time is achieved by manipulating vectors instead
+of matrices, taking full advantage of the fact that we work with the
+natural representation. A similar algorithm works for the natural
+representation of all classical groups; we shall describe this extension
+in a forthcoming paper.
 
-The algorithm consists of two parts, of quite different nature. In the first part, we construct a subspace $W \le V$ of dimension $2$, and a subgroup $H \le G$ acting as $\SL(2,q)$ on $W$ and fixing a $(d-2)$-dimensional subspace of $V$. In the second part, we build larger and larger subspaces $W_i$ and nice generators for the groups $\SL(W_i)$, until we reach $\SL(V)$.
+The algorithm consists of two parts of quite different nature. In
+the first part, we construct a subspace $W \le V$ of dimension $2$,
+and a subgroup $H \le G$ acting as $\SL(2,q)$ on $W$ and fixing a
+$(d-2)$-dimensional subspace of $V$. In the second part, we build
+larger and larger subspaces $W_i$ and nice generators for the groups
+$\SL(W_i)$, until we reach $\SL(V)$.
 
 \section{Going down}
 \label{going down}
 
-In this section, we describe and analyze the first part of the algorithm, the construction of a subgroup isomorphic to $\SL(2,q)$. First, we present a subroutine that constructs an $\SL(4,q)$-subgroup.
+In this section, we describe and analyze the first part of the
+algorithm, the construction of a subgroup isomorphic to $\SL(2,q)$.
+First, we present a subroutine that constructs an $\SL(4,q)$-subgroup.
 
 \medskip\noindent
 {\bf {Algorithm:}} \textsc{GoDownTo4Dim}
@@ -211,10 +299,11 @@ In this section, we describe and analyze the first part of the algorithm, the co
 \begin{enumerate}
 \item {\bf {assign}} $H := G$ {\bf {and}} $dim := d$;
 \item {\bf {repeat}} 
-\item \hspace*{1cm} $h:=$(pseudo)random$(H)$; $p_h(t):=$characteristic polynomial of $h$; 
+\item \hspace*{1cm} $h:=$(pseudo)random$(H)$; $p_h(t):=$characteristic
+polynomial of $h$;
 \item \hspace*{1cm} $\{ f_i(t) \}:=$factors of $p_h(t)$;
-\item \hspace*{1cm} {\bf {if}} $\exists f_i(t)$, $k:=\deg(f_i(t)$ relative prime
-to all other $\deg(f_j(t))$ 
+\item \hspace*{1cm} {\bf {if}} $\exists f_i(t)$, $k:=\deg(f_i(t)$
+relative prime to all other $\deg(f_j(t))$
 
  \hspace*{2cm} {\bf {and}} $1<k<2 \log(dim)$ {\bf {then}}
 \item \hspace*{2cm} $\ell:=\prod_{j \ne i} \left(q^{\deg(f_j(t))}-1\right)$
@@ -228,7 +317,48 @@ to all other $\deg(f_j(t))$
 \item {\bf {fi}}
 \end{enumerate}
 
+\section{Going up}
+\label{going up}
 
+In this section we describe and analyze the second part of the
+algorithm, starting with a subgroup isomorphic to $\SL(2,q)$ and
+ending with nice generators for the whole group $G$. The crucial
+result is Theorem~\ref{double}, which provides the stop to essentially
+double the Lie rank of the subgroup for which we have nice generators.
+
+For this section all our notation from previous sections remains in place.
+
+\begin{theorem}[Doubling the dimension]
+\label{double}
+Let $2 \le n < d$, let $\B := (v_1, v_2, \ldots, v_d)$ be a basis of $V$
+and denote by $W_n$ the subspace of $V$ spanned by $(v_1, \ldots, v_n)$. 
+Furthermore, let $P$ be a straight-line program
+from $X$ to a generating set $Y_n$, which is a set of standard
+generators for $\SL(n,q)$ with respect to the basis $\B$.
+Let $n' := \min\{ 2n-1, d\}$.
+
+Then there is an algorithm that computes a basis $\B' = (v'_1, \ldots,
+v'_d)$ of $V$ together with a straight-line program $P'$ from $X$
+to a generating set $Y_{n'}$, which is a set of standard generators
+for $\SL(n',q)$ with respect to the basis $\B'$.
+
+The running time of the algorithm is $O(\ldots)$ where $\xi$ is the
+cost of the construction of a (nearly) uniformly distributed random
+group element in $G$ and $\mu$ is the cost of a field operation in
+$GF(q)$. The length of the resulting straight-line program $P'$ is
+bounded above by $O(\ldots)$ plus the length of the straight-line
+program $P$.
+\end{theorem}
+
+\emph{Remark:} The proposed algorithm is a bit lengthy. Therefore
+we first present it in the running text and then show a proof of its
+correctness and the claims about running time and length of
+straight-line programs.
+
+
+\section{Conclusion}
+
+Here we put everything together to prove our main Theorem~\ref{main}.
 
 \begin{thebibliography}{999}
 
@@ -252,12 +382,26 @@ P.B. Kleidman and M.W. Liebeck, \emph{The {S}ubgroup {S}tructure of the
   {F}inite {C}lassical {G}roups}, London Math. Soc. Lecture Note Series, vol.
   129, Cambridge University Press, 1990.
 
+\bibitem{LG99}
+C.R.~Leedham-Green. \emph{The computational matrix group project.}
+  Groups and computation, III (Columbus, OH, 1999), 229--247, 
+  Ohio State Univ. Math. Res. Inst. Publ., 8, de Gruyter, Berlin, 2001.
+
+\bibitem{NS06}
+M.~Neunh{\"o}ffer and {\'A}kos Seress.
+  \emph{A data structure for a uniform approach to computations with finite 
+  groups.} ISSAC 2006, 254--261, ACM, New York, 2006. 
+
+\bibitem{OB09}
+E.A.~O'Brien. \emph{Algorithms for matrix groups.}
+    Groups St Andrews 2009 in Bath, LMS Lecture Notes 388, 297--323, 2011.
+
 \bibitem{Seress}
 {\'A}. Seress, \emph{Permutation {G}roup {A}lgorithms}, Cambridge
   Tracts in Mathematics, vol. 152, Cambridge University Press, Cambridge, 2003.
   
 \bibitem{WebAt}
-R.A. Wilson et~al., \emph{A {W}orld-{W}ide-{W}eb {A}tlas of finite group
+R.A.~Wilson et~al., \emph{A {W}orld-{W}ide-{W}eb {A}tlas of finite group
   representations}, {\texttt{http://brauer.maths.qmul.ac.uk/Atlas/v3/}}.
 
 
