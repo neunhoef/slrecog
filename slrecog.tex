@@ -205,37 +205,41 @@ $\eval(w_j)=(\eval(w_k))^{-1}$.
 The present paper solves the constructive membership problem in the
 groups $\SL(d,q)$, given as $G = \langle X \rangle \le \GL(V)$, for a
 $d$-dimensional vector space $V$ over $\GF(q)$. To describe the output
-of the algorithm, we need the following notation.
+of the algorithm, we need the following notation and definition.
 
 Let $q=p^e$ for some prime $p$ and let $(\varepsilon_1, \ldots, \varepsilon_e)$
-be a basis of $\GF(q)$ over $\GF(p)$ such that we can easily express
-elements of $\GF(q)$ as vectors in this basis in practice. 
+be a basis of $\GF(q)$ over $\GF(p)$.
+% such that we can easily express elements of $\GF(q)$ as vectors in this basis in practice. 
 For a basis $B=(b_1,b_2,\ldots,b_d)$    
-of $V$ and $\alpha \in \GF(q)$, let $E_{ij}(\alpha) \in \SL(V)$ be      
+of $V$ and $\beta \in \GF(q)$, let $E_{ij}(\beta) \in \SL(V)$ be      
 the group element with matrix (in the basis $B$) $M=(m_{k\ell})$ with   
-$m_{k\ell}=1$ if $k=\ell$; $m_{ij}=\alpha$; and all other entries of    
+$m_{k\ell}=1$ if $k=\ell$; $m_{ij}=\beta$; and all other entries of    
 $M$ equal to $0$.                                                       
 
-We first need the definition of standard generators for $\SL(d,q)$:
+For $n \le d$, we define the standard generators of $\SL(n,q)$ with 
+respect to $B$ the following way.
 
 \begin{definition}[Standard generators for $\SL(n,q)$]
-Let $G = \left< Y \right>$ be a subgroup of $\GL(d,q)$ that is 
-isomorphic to $\SL(n,q)$ and fixes an $d-n$-dimensional subspace $W$ of
-$V$. Then $Y$ is called a \emph{set of standard generators for
+{\em
+Let $G = \left< Y \right>$ be a subgroup of $\GL(V)$ that 
+acts as $\SL(V_n)$ on the subspace $V_n:=\langle b_1,\ldots,b_n \rangle$ and 
+fixes the $(d-n)$-dimensional subspace $\langle b_{n+1},\ldots,b_d\rangle$ pointwise.
+Then $Y$ is called a \emph{set of standard generators for
 $\SL(n,q)$ with respect to the basis $(v_1, \ldots, v_d)$} of $V$, 
-if it has $2e+2$ elements and contains the following elements:
+if it consists of the following  $2e+2$ elements:
 \begin{itemize}
-\item for each $1 \le i \le e$ an element of the form $E_{1,2}(\varepsilon_i)$,
-\item for each $1 \le i \le e$ an element of the form $E_{2,1}(\varepsilon_i)$,
+\item for $1 \le i \le e$, an element with matrix $E_{1,2}(\varepsilon_i)$;
+\item for $1 \le i \le e$, an element with matrix $E_{2,1}(\varepsilon_i)$;
 \item a permutation matrix corresponding to the permutation
 $(n,n-1,\ldots,1)$ with the entry $(1,n)$ changed to $-1$ if $n$ is
-even, and
+even; and
 \item a permutation matrix corresponding to the permutation
 $(n,n-1,\ldots,2)$ with the entry $(2,n)$ changed to $-1$ if $n$ is
 odd.
 \end{itemize}
-The $-1$ entries are of course there to ensure that the elements are
+The $(-1)$ entries are of course introduced to ensure that the elements are
 contained in $\SL(n,q)$.
+}
 \end{definition}
 
 \begin{theorem}
@@ -243,7 +247,7 @@ contained in $\SL(n,q)$.
 There exists a Las Vegas algorithm that, given $\SL(d,q) \cong G 
 = \langle X \rangle
 \le \GL(V)$ in its natural representation, computes a straight-line
-program $P$ to a new generating set $Y$ together with a basis
+program $P$ to a new set $Y$ of generators together with a basis
 $\B := (v_1, \ldots, v_d)$ of $V$
 such that $Y$ is a set of standard generators for $\SL(d,q)$ with 
 respect to $\B$.
