@@ -62,6 +62,7 @@
 \newcommand{\mindeg}{{\rm mindeg}}
 \newcommand{\Cl}{{\rm Cl}}
 \newcommand{\GAP}{{\sl {GAP}}}
+\newcommand{\Fix}{\mathrm{Fix}}
 \def\ve{\varepsilon}
 \def\Rad{{\rm Rad}}
 
@@ -327,14 +328,15 @@ relative prime to all other $\deg(f_j(t))$
 In this section we describe and analyze the second part of the
 algorithm, starting with a subgroup isomorphic to $\SL(2,q)$ and
 ending with nice generators for the whole group $G$. The crucial
-result is Theorem~\ref{double}, which provides the stop to essentially
+result is Theorem~\ref{double}, which provides the step to essentially
 double the Lie rank of the subgroup for which we have nice generators.
 
 For this section all our notation from previous sections remains in place.
 
 \begin{theorem}[Doubling the dimension]
 \label{double}
-Let $2 \le n < d$, let $\B := (v_1, v_2, \ldots, v_d)$ be a basis of $V$
+Let $2 \le n < d$ with $n$ odd when $n > 2$, 
+let $\B := (v_1, v_2, \ldots, v_d)$ be a basis of $V$
 and denote by $W_n$ the subspace of $V$ spanned by $(v_1, \ldots, v_n)$. 
 Furthermore, let $P$ be a straight-line program
 from $X$ to a generating set $Y_n$, which is a set of standard
@@ -355,9 +357,76 @@ program $P$.
 \end{theorem}
 
 \emph{Remark:} The proposed algorithm is a bit lengthy. Therefore
-we first present it in the running text and then show a proof of its
+we first present it in the running text and then write up a proof of its
 correctness and the claims about running time and length of
 straight-line programs.
+
+\smallskip
+Here is the general idea of the algorithm: With the help of a random 
+element of $G$ we construct an element $c$ that conjugates the copy $H$
+of $\SL(n,q)$ for which we have standard generators to a subgroup $H'$ of
+$G$ which has two properties:
+\begin{itemize}
+\item The $n$-dimensional spaces on which $H$ and $H'$ actually act 
+intersect in a $1$-dimensional space and
+\item $\left< H, H' \right>$ is isomorphic to $\SL(n',q)$.
+\end{itemize}
+This setup allows us to choose a basis of the new $n'$-dimensional
+subspace of $V$ very carefully, such that we can use $c$-conjugates of certain
+transvections in $H$ to put together standard generators for $\SL(n',q)$
+with respect to the new basis. 
+
+Note that we do not have to construct the actual matrices of our standard
+generators, since we only need a straight line program to express them in the
+original generators anyway. However, since we know exactly to which
+matrices with respect to our basis $\B$ these standard generators correspond,
+we can actually do linear algebra computations to decide what products
+and inversions we actually put into the resulting straight line program.
+To ease the presentation, we use expressions like ``construct an element''
+as a certain product, but we always just mean ``write the construction
+into the resulting straight line program''.
+
+Let $V_n := \left< v_1, v_2, \ldots, v_n\right>$.
+
+\smallskip
+\begin{enumerate}
+\item Construct an element $s$ with fixed space of dimension $d-n+1$.
+
+If $n=2$, we take $s := E_{1,2}(1)$ which is one of our known standard
+generators, its fixed space is $\left< v_2, \ldots, v_d\right>$ and thus
+has the right dimension. If $n > 2$, then it is by assumption odd.
+In this case we take for $s$ the $(n-1)$-cycle if the characteristic $p$
+is odd, and the $n$-cycle if it is odd. Both are amongst our
+standard generators, so that we already have an SLP for them. The fixed
+space is $\left< v_1, v_{n+1}, v_{n+2}, \ldots, v_d\right>$ in the first
+case and $\left< v_1+v_2+\cdots+v_n, v_{n+1}, \ldots, v_d\right>$ in the
+second case.
+
+We emphasise once more that the element $s$ is ``constructed'' as an SLP in
+the given standard generators of $\SL(n,q)$, but can at the same time be
+written down explicitly as a matrix with respect to the basis $\B$ at
+essentially no cost.
+\item Find a good random element $c$.
+
+The idea for this step is to create uniformly distributed random elements 
+$c_1$ in $G$ and then take $c := s^{c_1}$. Since $c$ is a conjugate of $s$,
+it has a fixed space of dimension $d-n+1$ as well, we denote this space
+by $\Fix_c$. We need the following
+conditions on $c$, which we fulfill by repeatedly trying elements $c_1$
+until they are satisfied:
+\begin{itemize}
+\item $\dim(V_n + V_n c) = n'$.
+\item 
+\end{itemize}
+\item Compute new basis.
+\item Adjust $\SL(n,q)$ standard generators.
+Recall from the previous paragraph that we do not actually multiply
+matrices but only write a straight line program when we say ``construct''.
+\item Consider transvections $t_i^c$ for $1 \le i \le n-1$.
+\item Put together transvections $t_i$ for $n+1 \le i \le n'$.
+\item Consider transvections $u_i^c$ for $1 \le i \le n-1$.
+\item Put together new $n'$- and $(n'-1)$-cycles.
+\end{enumerate}
 
 
 \section{Conclusion}
