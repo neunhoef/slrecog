@@ -62,7 +62,7 @@
 \newcommand{\mindeg}{{\rm mindeg}}
 \newcommand{\Cl}{{\rm Cl}}
 \newcommand{\GAP}{{\sl {GAP}}}
-\newcommand{\Fix}{\mathrm{Fix}}
+\newcommand{\Fix}[1]{\mathrm{Fix}(#1)}
 \def\ve{\varepsilon}
 \def\Rad{{\rm Rad}}
 
@@ -386,7 +386,18 @@ To ease the presentation, we use expressions like ``construct an element''
 as a certain product, but we always just mean ``write the construction
 into the resulting straight line program''.
 
-Let $V_n := \left< v_1, v_2, \ldots, v_n\right>$.
+One last comment is in order before we begin the description of the
+algorithm. The generic case is that $n'=2n-1$ and $d$ is even bigger.
+However, we can handle the case that $2n-1 \ge d$ with the very same
+methods, which is why we introduce the variable $n'$ as the dimension
+we are targetting in the current step.
+
+Let $V_n := \left< v_1, v_2, \ldots, v_n\right>$. We denote by $(-|-)$
+the standard scalar product on $V$ with respect to the basis $\B$,
+that is $(v_i|v_j) = \delta_{i,j}$. For an element $g$ of $G$ we write
+$\Fix c$ for its fixed space, and for a subgroup $K$ of $G$ we write
+$\Fix K$ for the subspace of vectors which are fixed by all elements
+of $K$.
 
 \smallskip
 \begin{enumerate}
@@ -408,19 +419,73 @@ written down explicitly as a matrix with respect to the basis $\B$ at
 essentially no cost.
 \item Find a good random element $c$.
 
-The idea for this step is to create uniformly distributed random elements 
-$c_1$ in $G$ and then take $c := s^{c_1}$. Since $c$ is a conjugate of $s$,
+The idea for this step is to create a uniformly distributed random element 
+$c_1$ in $G$ and then take $c := s^{c_1}$. This is one of the few places
+in this algorithm where we actually have to multiply $(d \times
+d)$-matrices, since we have to base change $c_1$ into basis $\B$ and
+then actually write down the matrix of $c$ with respect to $\B$. This
+is necessary to perform the following linear algebra computations.
+
+Since $c$ is a conjugate of $s$,
 it has a fixed space of dimension $d-n+1$ as well, we denote this space
-by $\Fix_c$. We need the following
+by $\Fix c$. We need the following
 conditions on $c$, which we fulfill by repeatedly trying elements $c_1$
 until they are satisfied:
 \begin{itemize}
-\item $\dim(V_n + V_n c) = n'$.
-\item 
+\item $\dim(V_n + V_n c) = n'$,
+\item there is a $v \in V_n \cap \Fix c$ with $(v|v_n) = 1$,
+\item $\dim(\Fix H \cap \Fix c) = d-n'$ if $n' < d$, and
+\item one more condition on the entries of a submatrix of $c^{-1}$
+\textbf{will be added later}.
 \end{itemize}
-\item Compute new basis.
-\item Adjust $\SL(n,q)$ standard generators.
-Recall from the previous paragraph that we do not actually multiply
+In the generic case that $n'=2n-1$ the dimension of $V_n \cap \Fix c$
+will always be equal to~$1$, since it is at least $1$ because the sum of the
+dimensions of $V_n$ and of $\Fix c$ is $d+1$ and because of 
+the first condition.
+Then the second condition is just a condition on all non-zero vectors
+in $V_n \cap \Fix c$. For $n' < 2n-1$ it is possible that $V_n \cap
+\Fix c$ has higher dimension than $1$.
+\item Modify $c$ such that it fixes $v_n$.
+
+In this step we slightly modify $c$ in a controlled way, such that
+$V_n \cap \Fix c$ contains the basis vector $v_n$. By our second
+condition in step 2., this is now relatively cheap. Let $v$ be
+the vector in $V_n \cap \Fix c$ with $(v|v_n)$ from above. We write
+an element $T \in H$ in terms of the standard generators that fulfills
+the following conditions: $v_iT = v_i$ for $1 \le i \le n-1$ and
+$v_n T = v$. Then $Tc T^{-1}$ fixes $v_n$ and still fulfills the
+conditions in step 2. We replace $c$ by $TcT^{-1}$.
+\item Compute new basis $\B' = (v'_1,v'_2,\ldots,v'_d)$.
+
+The purpose of this step is to compute our new basis, with respect to
+which we can later produce standard generators for $\SL(n',q)$.
+The first $n-1$ vectors of the new basis are equal to the vectors in
+the old basis: $v'_i := v_i$ for $1 \le i \le n-1$. The basis vector
+$v'_n$ is chosen in $V_n \cap \Fix c$ such that $(v'_n|v_n) = 1$,
+which is possible by the second condition on $c$ in step 2. Let $\pi: V
+\to V_n$ be the projection map to the first summand of $V = V_n \oplus
+\left< v_n+1,\ldots,v_d\right>$. The basis vectors $v'_{n+1}, \ldots,
+v'_{n'}$ are chosen as a linearly independent subset of the vectors
+$\pi(v_1c), \ldots, \pi(v_{n-1}c)$. This is possible since $\dim(V_n +
+V_n c) = n'$ and $v'_n \in V_n$ is fixed by $c$. We store the indices
+$1 \le i_1 < \cdots < i_{n'-n} \le n-1$ of the selected vectors for later 
+use. Finally, in the case $n' < d$, that is, $n'=2n-1$, we extend 
+$(v'_1, \ldots, v'_{n'})$ to a basis $\B' =
+(v'_1, \ldots, v'_d)$ of $V$ by choosing a basis of $\Fix H \cap
+\Fix c$, which is possible by the third condition on $c$ in step 2. 
+Note that $V_n = \left< v'_1, \ldots, v'_n\right>$ and $V_n + V_nc
+= \left< v'_1, \ldots, v'_{n'}\right>$ and $\left< v'_{n+1}, \ldots,
+v'_d\right> \subseteq \Fix H$.
+\item Adjust the $\SL(n,q)$ standard generators.
+
+In this step we have to adjust the standard generators for $\SL(n,q)$
+with respect to $\B$ to transform them into standard generators
+for $\SL(n,q)$ with respect to $\B'$. Fortunately, since 
+$\left< v'_{n+1}, \ldots, v'_d\right> \subseteq \Fix H$ and the
+first $n-1$ basis vectors are unchanged, all we have to do is to make
+an adjustment for the new basis vector $v'_n$.
+
+Recall from the comments before the proof that we do not actually multiply
 matrices but only write a straight line program when we say ``construct''.
 \item Consider transvections $t_i^c$ for $1 \le i \le n-1$.
 \item Put together transvections $t_i$ for $n+1 \le i \le n'$.
