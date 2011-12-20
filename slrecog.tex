@@ -65,6 +65,10 @@
 \newcommand{\Fix}[1]{\mathrm{Fix}(#1)}
 \def\ve{\varepsilon}
 \def\Rad{{\rm Rad}}
+\newcommand{\fixme}[1]{\textbf{#1}}
+\newcommand{\tr}{\mathrm{tr}}
+%\newcommand{\proof}{Proof:}
+\newcommand{\proofend}{\hfill$\blacksquare$}
 
 \newcommand{\B}{\mathcal{B}}
 
@@ -364,40 +368,44 @@ straight-line programs.
 \smallskip
 Here is the general idea of the algorithm: With the help of a random 
 element of $G$ we construct an element $c$ that conjugates the copy $H$
-of $\SL(n,q)$ for which we have standard generators to a subgroup $H'$ of
-$G$ which has two properties:
+of $\SL(n,q)$ for which we have standard generators to a subgroup $H'=H^c$ of
+$G$ which the following property:
 \begin{itemize}
 \item The $n$-dimensional spaces on which $H$ and $H'$ actually act 
-intersect in a $1$-dimensional space and
-\item $\left< H, H' \right>$ is isomorphic to $\SL(n',q)$.
+intersect in an at least $1$-dimensional space.
 \end{itemize}
 This setup allows us to choose a basis of the new $n'$-dimensional
-subspace of $V$ very carefully, such that we can use $c$-conjugates of certain
+subspace of $V$ very carefully such that we can use $c$-conjugates of certain
 transvections in $H$ to put together standard generators for $\SL(n',q)$
-with respect to the new basis. 
+with respect to the new basis. At the same time this allows us to conclude 
+that the group $\left<H,H'\right>$ is indeed isomorphic to $\SL(n',q)$,
 
 Note that we do not have to construct the actual matrices of our standard
 generators, since we only need a straight line program to express them in the
 original generators anyway. However, since we know exactly to which
 matrices with respect to our basis $\B$ these standard generators correspond,
 we can actually do linear algebra computations to decide what products
-and inversions we actually put into the resulting straight line program.
-To ease the presentation, we use expressions like ``construct an element''
-as a certain product, but we always just mean ``write the construction
+and inversions we put into the resulting straight line program.
+To ease the presentation, we use expressions like ``construct an element
+as a certain product'', but we always just mean ``write the construction
 into the resulting straight line program''.
 
 One last comment is in order before we begin the description of the
 algorithm. The generic case is that $n'=2n-1$ and $d$ is even bigger.
-However, we can handle the case that $2n-1 \ge d$ with the very same
+However, we can handle the case $2n-1 \ge d$ with the very same
 methods, which is why we introduce the variable $n'$ as the dimension
 we are targetting in the current step.
 
-Let $V_n := \left< v_1, v_2, \ldots, v_n\right>$. We denote by $(-|-)$
+We denote by $(-|-)$
 the standard scalar product on $V$ with respect to the basis $\B$,
-that is $(v_i|v_j) = \delta_{i,j}$. For an element $g$ of $G$ we write
-$\Fix c$ for its fixed space, and for a subgroup $K$ of $G$ we write
+that is, $(v_i|v_j) = \delta_{i,j}$.
+For an element $g$ of $G$ we write
+$\Fix g$ for its fixed space, and for a subgroup $K$ of $G$ we write
 $\Fix K$ for the subspace of vectors which are fixed by all elements
 of $K$.
+Let $V_n := \left< v_1, v_2, \ldots, v_n\right>$ and $F_{d-n} :=
+\left< v_{n+1}, \ldots, v_d \right>$. Note that $H$ acts on $V_n$ as
+$\SL(V_n)$ and that $F_{d-n} = \Fix H$.
 
 \smallskip
 \begin{enumerate}
@@ -433,66 +441,155 @@ conditions on $c$, which we fulfill by repeatedly trying elements $c_1$
 until they are satisfied:
 \begin{itemize}
 \item $\dim(V_n + V_n c) = n'$,
-\item there is a $v \in V_n \cap \Fix c$ with $(v|v_n) = 1$,
-\item $\dim(\Fix H \cap \Fix c) = d-n'$ if $n' < d$, and
-\item one more condition on the entries of a submatrix of $c^{-1}$
-\textbf{will be added later}.
+\item if $n' < d$ then $\dim(F_{d-n} + \Fix c) = d$.
 \end{itemize}
-In the generic case that $n'=2n-1$ the dimension of $V_n \cap \Fix c$
-will always be equal to~$1$, since it is at least $1$ because the sum of the
-dimensions of $V_n$ and of $\Fix c$ is $d+1$ and because of 
-the first condition.
-Then the second condition is just a condition on all non-zero vectors
-in $V_n \cap \Fix c$. For $n' < 2n-1$ it is possible that $V_n \cap
-\Fix c$ has higher dimension than $1$.
+These conditions have some immediate consequences using
+Lemma~\ref{dimformula}: Since $\dim(\Fix c) =
+d-n+1$ and $\dim(V_n) = n$, we get $\dim(V_n \cap \Fix c) \ge
+1$. In the case that $n' < d$, we have
+$\dim(F_{d-n} \cap \Fix c) = (d-n) + (d-n+1) - d = d-2n+1 = d-n'$ by 
+the second condition. Indeed, in this
+case the dimension of $V_n \cap \Fix c$
+will always be equal to~$1$, since $V_n \cap \Fix c \subseteq V_n \cap V_n
+c$ and the latter has dimension $1$ by the first condition.
+For $n' < 2n-1$ it is possible that $V_n \cap \Fix c$ has higher 
+dimension than $1$.
+
+Note that there is one more condition on $c$, however, we can only
+formulate this in step 5. If it then turns out to be not fulfilled,
+we simply go back to this step and try another $c_1$.
 \item Modify $c$ such that it fixes $v_n$.
 
 In this step we slightly modify $c$ in a controlled way, such that
-$V_n \cap \Fix c$ contains the basis vector $v_n$. By our second
-condition in step 2., this is now relatively cheap. Let $v$ be
-the vector in $V_n \cap \Fix c$ with $(v|v_n)$ from above. We write
-an element $T \in H$ in terms of the standard generators that fulfills
-the following conditions: $v_iT = v_i$ for $1 \le i \le n-1$ and
-$v_n T = v$. Then $Tc T^{-1}$ fixes $v_n$ and still fulfills the
-conditions in step 2. We replace $c$ by $TcT^{-1}$.
+$V_n \cap \Fix c$ contains the basis vector $v_n$. We do this by expressing
+an element $T \in H$ in terms of our standard generators with $v_nT
+= v$, where $v$ is any non-zero vector in $V_n \cap \Fix c$,
+and then setting replacing $c$ by $Tc T^{-1}$. This still fulfills
+the conditions in step 2.~since $T \in H$ \fixme{Is this true???}.
+
+To find $T$, we proceed as follows: Let $0 \neq v \in V_n \cap \Fix c$.
+If $(v|v_n) \neq 0$, then we can multiply $v$ by a scalar such that
+$(v | v_n) = 1$, which allows us to write $T$ as a product of
+elements of the form $E_{n,i}(\beta)$ for $1 \le i \le n-1$, 
+which are easily expressed
+in terms of the standard generators (see Lemma~\ref{transvecs}). 
+If $(v|v_n) = 0$, we find an $i$ with $(vE_{i,n}|v_n) \neq 0$ and
+then a $T' \in H$ with $v_n T' = vE_{i,n}(1)$ as above,
+replacing $v$ with a scalar multiple as needed. Finally, we set
+$T := T' E_{i,n}(1)^{-1}$.
 \item Compute new basis $\B' = (v'_1,v'_2,\ldots,v'_d)$.
 
 The purpose of this step is to compute our new basis, with respect to
 which we can later produce standard generators for $\SL(n',q)$.
-The first $n-1$ vectors of the new basis are equal to the vectors in
-the old basis: $v'_i := v_i$ for $1 \le i \le n-1$. The basis vector
-$v'_n$ is chosen in $V_n \cap \Fix c$ such that $(v'_n|v_n) = 1$,
-which is possible by the second condition on $c$ in step 2. Let $\pi: V
-\to V_n$ be the projection map to the first summand of $V = V_n \oplus
-\left< v_n+1,\ldots,v_d\right>$. The basis vectors $v'_{n+1}, \ldots,
-v'_{n'}$ are chosen as a linearly independent subset of the vectors
-$\pi(v_1c), \ldots, \pi(v_{n-1}c)$. This is possible since $\dim(V_n +
-V_n c) = n'$ and $v'_n \in V_n$ is fixed by $c$. We store the indices
-$1 \le i_1 < \cdots < i_{n'-n} \le n-1$ of the selected vectors for later 
-use. Finally, in the case $n' < d$, that is, $n'=2n-1$, we extend 
-$(v'_1, \ldots, v'_{n'})$ to a basis $\B' =
-(v'_1, \ldots, v'_d)$ of $V$ by choosing a basis of $\Fix H \cap
-\Fix c$, which is possible by the third condition on $c$ in step 2. 
-Note that $V_n = \left< v'_1, \ldots, v'_n\right>$ and $V_n + V_nc
-= \left< v'_1, \ldots, v'_{n'}\right>$ and $\left< v'_{n+1}, \ldots,
-v'_d\right> \subseteq \Fix H$.
-\item Adjust the $\SL(n,q)$ standard generators.
+The first $n$ vectors of the new basis are equal to the vectors in
+the old basis: $v'_i := v_i$ for $1 \le i \le n$.
+Let $\pi: V \to V_n$ be the projection map to the first summand of
+$V = V_n \oplus F_{d-n}$. The basis vectors
+$v'_{n+1}, \ldots, v'_{n'}$ are chosen as a linearly independent subset
+of the vectors $\pi(v_1c), \ldots, \pi(v_{n-1}c)$. This is possible
+since $\dim(V_n + V_n c) = n'$ and $v'_n=v_n \in V_n$ is fixed by $c$.
+We store the indices $1 \le i_1 < \cdots < i_{n'-n} \le n-1$ of the
+selected vectors for later use. Finally, in the case $n' < d$, that is,
+$n'=2n-1$, we extend $(v'_1, \ldots, v'_{n'})$ to a basis $\B' = (v'_1,
+\ldots, v'_d)$ of $V$ by choosing a basis of $F_{d-n} \cap \Fix c$, which
+is possible by the second condition on $c$ in step 2. Note that $V_n =
+\left< v'_1, \ldots, v'_n\right>$ and $V_n + V_nc = \left< v'_1, \ldots,
+v'_{n'}\right>$ and $\left< v'_{n+1}, \ldots, v'_d\right> \subseteq \Fix
+H$. Note that the latter condition ensures that our standard generators
+for $\SL(n,q)$ with respect to $\B$ are indeed also standard generators
+for $\SL(n,q)$ with respect to $\B'$.
 
-In this step we have to adjust the standard generators for $\SL(n,q)$
-with respect to $\B$ to transform them into standard generators
-for $\SL(n,q)$ with respect to $\B'$. Fortunately, since 
-$\left< v'_{n+1}, \ldots, v'_d\right> \subseteq \Fix H$ and the
-first $n-1$ basis vectors are unchanged, all we have to do is to make
-an adjustment for the new basis vector $v'_n$.
+From this stage on we express all our matrices in the new basis $\B'$,
+so we in particular express $c$ with respect to $\B'$.
+Also, our notation $(-|-)$ for the scalar product refers from now on
+to the basis $\B'$, that is, $(v'_i | v'_j) = \delta_{i,j}$.
+\item Consider the transvections $E_{j,n}(\varepsilon_i)^c$ 
+for $1 \le i \le e$ and $1 \le j \le n-1$.
 
-Recall from the comments before the proof that we do not actually multiply
-matrices but only write a straight line program when we say ``construct''.
-\item Consider transvections $t_i^c$ for $1 \le i \le n-1$.
-\item Put together transvections $t_i$ for $n+1 \le i \le n'$.
-\item Consider transvections $u_i^c$ for $1 \le i \le n-1$.
+We have: $xE_{j,n}(\varepsilon_i) = x + (x|v_j) \varepsilon_i v_n$ 
+for all $x \in V$
+and for $1 \le j \le n-1$, so $E_{j,n}(\varepsilon)$ is a transvection.
+Therefore, by Lemma~\ref{conjtransv}, 
+the conjugate $E_{j,n}(\varepsilon_i)^c$ is the transvection
+with $xE_{j,n}(\varepsilon_i)^c = x + (x|v_ic^{-\tr})\varepsilon_i v_n$ 
+for $x \in V$, since $v_nc = v_n$. Note that all
+$E_{j,n}(\varepsilon_i)^c$ fix $v_n$, since $c$ and $c^{-1}$ and
+$E_{j,n}(\varepsilon_i)$ fix $v_n$, so $(v_n|v_jc^{-\tr}) = 0$ for $1 \le
+j \le n-1$.
+
+Thus, the vectors $\varepsilon_i v_j$ and $\varepsilon_i v_j c^{-\tr}$
+for $1 \le i \le e$ and $1 \le j \le n-1$
+are all orthogonal to $v_n$ and we know for all 
+vectors $w$ in this list an SLP for the transvection with
+$x \mapsto x + (x|w)v_n$. By our conditions on $c$ from step 2.~we know
+that 
+
+\item Put together transvections $E_{i,n}(\varepsilon)$ for $n+1 \le i \le n'$.
+\item Consider transvections $E_{n,i}(\varepsilon)^c$ for $1 \le i \le n-1$.
+
+These yield transvections $E_{n,i}(\varepsilon)$ for $n+1 \le i \le n'$.
+
 \item Put together new $n'$- and $(n'-1)$-cycles.
+
+Essentially we need the $n'-n+1$-cycle $(n',n'-1, \ldots, n)$ which can 
+be made using $E_{i,n}(1)$ and $E_{n,i}(1)$ for $n+1 \le i \le n'$.
 \end{enumerate}
 
+\section{Technical lemmas}
+
+In the following, we collect a few technical lemmas which are used
+elsewhere:
+
+\begin{lemma}
+\label{dimformula}
+Let $U,W$ be two subspaces of the finite-dimensional vector space $V$.
+Then
+\[ \dim U + \dim V = \dim(U+V) + \dim(U \cap V). \]
+\end{lemma}
+
+\begin{lemma}
+\label{transvecs}
+Each element of the form $E_{1,n}(\beta)$ or $E_{n,1}(\beta)$ can be
+expressed as a product of length $5$ of powers of standard generators
+in which the absolute value of the exponents are bounded from above 
+by $p-1$. \fixme{TODO: Make this explicit.}
+\end{lemma}
+
+\begin{lemma}
+\label{conjtransv}
+Let $T : V \to V$ be the transvection with $xT = x+(x|s)t$ for all
+$x \in V$ and two fixed vectors $s,t \in V$, and let 
+$c \in \GL(V)$ be arbitrary. 
+Then $T^c$ is the transvection with $xT^c = x + (xc^{-1}|s)tc
+= x + (x|sc^{-\tr})tc$ for $x \in V$, 
+where $c^{-\tr}$ is the inverse transposed matrix of $c$.
+\end{lemma}
+
+\begin{lemma}
+\label{powertrans}
+Let $T : V \to V$ be the transvection with $xT = x+(x|s)t$ for all
+$x \in V$ and two fixed vectors $s,t \in V$ with $(t|s)=0$, and let 
+$1 \le k \le p-1$. Then $T^k$ is the transvection
+with $xT^k = x + (x|s)(k\cdot 1_{GF(q)}) t$.
+\end{lemma}
+\proof Since $(t|s)=0$, repeated application of $T$ just adds the same
+scalar multiple of $t$ repeatedly $k$ times.
+\proofend
+
+\begin{lemma}
+\label{lincombtrans}
+Let $w_1, w_2, \ldots, w_k \in V$ and $u \in V$ be vectors with 
+$(u|w_i)=0$ and let $T_i$ for $1 \le
+i \le k$ be the transvection with $xT_i = x + (x|w_i)u$ for $x \in V$
+and $1 \le i \le k$. 
+Then the $T_i$ commute pairwise and their product is the transvection $T$
+with $xT = x + (x|\sum_{i=1}^k w_i) u$ for $x \in V$.
+\end{lemma}
+\proof The vector $u$ is fixed by all $T_i$ and all $T_i$ only modify
+an $x$ by adding a scalar multiple of $u$. Therefore linearity
+immediately implies that all $T_i$ commute and that $T$ adds
+$(x|\sum_{i=1}^k w_i)u$ to an $x \in V$.
+\proofend
 
 \section{Conclusion}
 
