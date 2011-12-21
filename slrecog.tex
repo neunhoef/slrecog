@@ -396,11 +396,6 @@ However, we can handle the case $2n-1 \ge d$ with the very same
 methods, which is why we introduce the variable $n'$ as the dimension
 we are targetting in the current step.
 
-We denote by $(-|-)$
-the standard scalar product on $V$ with respect to the basis $\B$,
-that is, $(v_i|v_j) = \delta_{i,j}$. Later we define a new basis 
-$\B' = (v'_1, \ldots, v'_d)$ and will then write $(-|-)'$ for the scalar
-product with $(v'_i|v'_j)' = \delta_{i,j}$.
 For an element $g$ of $G$ we write
 $\Fix g$ for its fixed space, and for a subgroup $K$ of $G$ we write
 $\Fix K$ for the subspace of vectors which are fixed by all elements
@@ -408,8 +403,6 @@ of $K$.
 Let $V_n := \left< v_1, v_2, \ldots, v_n\right>$ and $F_{d-n} :=
 \left< v_{n+1}, \ldots, v_d \right>$. Note that $H$ acts on $V_n$ as
 $\SL(V_n)$ and that $F_{d-n} = \Fix H$.
-For two vectors $s,t \in V$ we denote the transvection $x \mapsto x + (x|s)t$
-by $T_{s,t}$ and likewise $T'_{s,t} : x \mapsto x + (x|s)'t$.
 
 \smallskip
 \begin{enumerate}
@@ -473,13 +466,14 @@ and then setting replacing $c$ by $Tc T^{-1}$. This still fulfills
 the conditions in step 2.~since $T \in H$ \fixme{Is this true???}.
 
 To find $T$, we proceed as follows: Let $0 \neq v \in V_n \cap \Fix c$.
-If $(v|v_n) \neq 0$, then we can multiply $v$ by a scalar such that
-$(v | v_n) = 1$, which allows us to write $T$ as a product of
-elements of the form $E_{n,i}(\beta)$ for $1 \le i \le n-1$, 
-which are easily expressed
-in terms of the standard generators (see Lemma~\ref{transvecs}). 
-If $(v|v_n) = 0$, we find an $i$ with $(vE_{i,n}(1)|v_n) \neq 0$ and
-then a $T' \in H$ with $v_n T' = vE_{i,n}(1)$ as above,
+Let $v = \sum_{j=1}^d \lambda_j v_i$. If $\lambda_n \neq 0$, 
+then we can multiply $v$ by a scalar such that
+$\lambda_n = 1$, which allows us to write $T$ as a product of
+elements of the form $E_{n,j}(\epsilon_i)$ for $1 \le i \le e$
+and $1 \le j \le n-1$, which are easily expressed in terms of the
+standard generators (see Lemma~\ref{transvecs}).
+If $\lambda_n = 0$, we find a $j$ with $\lambda_j \neq 0$ and
+then a $T' \in H$ with $v_n T' = vE_{j,n}(1)$ as above,
 replacing $v$ with a scalar multiple as needed. Finally, we set
 $T := T' E_{i,n}(1)^{-1}$.
 \item Compute new basis $\B' = (v'_1,v'_2,\ldots,v'_d)$.
@@ -503,31 +497,38 @@ v'_{n'}\right>$ and $\left< v'_{n+1}, \ldots, v'_d\right> \subseteq \Fix
 H$. Note that the latter condition ensures that our standard generators
 for $\SL(n,q)$ with respect to $\B$ are indeed also standard generators
 for $\SL(n,q)$ with respect to $\B'$.
+\end{enumerate}
 
-From this stage on we express all our matrices in the new basis $\B'$,
-so we in particular express $c$ with respect to $\B'$.
-Also, from now on we use the scalar product $(-|-)'$ with 
-$(v'_i|v'_j)' = \delta_{i,j}$. Note that $E_{j,n}(\epsilon) =
-T'_{v'_j,\epsilon v'_n}$ and $E_{n,j}(\epsilon) = T'_{v'_n,\epsilon
-v'_j}$ for all $j < n$.
+\noindent
+From this stage on we imagine all our matrices to be expressed in the
+new basis $\B'$ and we conjugate $c$ by the base change matrix between
+$\B$ and $\B'$. We denote by $(-|-)$ the standard scalar product on $V$
+with respect to the basis $\B'$, that is, $(v'_i|v'_j) = \delta_{i,j}$.
+For two vectors $s,t \in V$ we denote the transvection $x \mapsto x +
+(x|s)t$ by $T(s,t)$. Note that the matrix $E_{i,j}(\beta)$ with respect
+to $\B'$ is nothing but the transvection $T(\beta v_i,v_j)$.
 
-\item Consider the transvections $T'_{v'_j,v'_n}(\varepsilon_i)^c$ 
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Consider the transvections $T(\varepsilon_i v'_j,v'_n)^c$ 
 for $1 \le i \le e$ and $1 \le j \le n-1$.
 
 By Lemma~\ref{conjtransv}, 
-the conjugate $E_{j,n}(\varepsilon_i)^c$ is the transvection
-with $xE_{j,n}(\varepsilon_i)^c = x + (x|v_ic^{-\tr})\varepsilon_i v_n$ 
-for $x \in V$, since $v_nc = v_n$. Note that all
-$E_{j,n}(\varepsilon_i)^c$ fix $v_n$, since $c$ and $c^{-1}$ and
-$E_{j,n}(\varepsilon_i)$ fix $v_n$, so $(v_n|v_jc^{-\tr}) = 0$ for $1 \le
-j \le n-1$.
+the conjugate $T(\varepsilon_i v'_j,v'_n)^c$ is the transvection
+with $T(\varepsilon_i v'_j c^{-\tr},v'_m)$,
+since $v_nc = v_n$. Note that all
+$T(\varepsilon_i v'_j,v'_n)^c$ fix $v'_n$, since $c$ and $c^{-1}$ and
+$T(\varepsilon_i v'_j,v'_n)$ fix $v'_n$, so $(v'_n|v'_jc^{-\tr}) = 0$ 
+for $1 \le j \le n-1$.
 
-Thus, the vectors $\varepsilon_i v_j$ and $\varepsilon_i v_j c^{-\tr}$
+Thus, the vectors $\varepsilon_i v'_j$ and $\varepsilon_i v'_j c^{-\tr}$
 for $1 \le i \le e$ and $1 \le j \le n-1$
 are all orthogonal to $v_n$ and we know for all 
-vectors $w$ in this list an SLP for the transvection with
-$x \mapsto x + (x|w)v_n$. By our conditions on $c$ from step 2.~we know
-that 
+vectors $w$ in this list an SLP for $T(w,v'_n)$.
+By our conditions on $c$ from step 2.~we know that they span the subspace
+$\left< v'_1, \ldots, v'_{n-1}, v'_{n+1}, \ldots, v'_{n'}\right>$, thus,
+using Lemma~\ref{lincombtrans} we can express all
+$T(\epsilon_i v'_j,v'_n)$ for $1 \le i \le e$ and $n+1 \le j \le n'$.
 
 \item Put together transvections $E_{i,n}(\varepsilon)$ for $n+1 \le i \le n'$.
 \item Consider transvections $E_{n,i}(\varepsilon)^c$ for $1 \le i \le n-1$.
@@ -543,7 +544,11 @@ be made using $E_{i,n}(1)$ and $E_{n,i}(1)$ for $n+1 \le i \le n'$.
 \section{Technical lemmas}
 
 In the following, we collect a few technical lemmas which are used
-elsewhere:
+elsewhere. Recall our notation that $V$ is a $d$-dimensional $GF(q)$-vector
+space, $\B' = (v'_1, v'_2, \ldots, v'_d)$ is a basis of $V$ and
+$(-|-)$ denotes the standard scalar product on $V$ with $(v'_i|v'_j) =
+\delta_{i,j}$. Finally, for two vectors $s,t \in V$ the
+map $T(s,t)$ is the transvection with $xT(s,t) = x + (x|s)t$.
 
 \begin{lemma}
 \label{dimformula}
@@ -551,6 +556,8 @@ Let $U,W$ be two subspaces of the finite-dimensional vector space $V$.
 Then
 \[ \dim U + \dim V = \dim(U+V) + \dim(U \cap V). \]
 \end{lemma}
+\proof Follows directly from the dimension formula for linear maps.
+\proofend
 
 \begin{lemma}
 \label{transvecs}
@@ -562,20 +569,19 @@ by $p-1$. \fixme{TODO: Make this explicit.}
 
 \begin{lemma}
 \label{conjtransv}
-Let $(-|-)$ be a non-degenerate bilinear form on $V$ and $T_{s,t}:V
-\to V$ be the transvection on $V$ with $xT_{s,t} = x+(x|s)t$ for $x
-\in V$, and let $c \in \GL(V)$ be arbitrary. 
-Then $T_{s,t}^c$ is the transvection with 
-$xT_{s,t}^c = x + (xc^{-1}|s)tc = x + (x|sc^{-\tr})tc$ for $x \in V$, 
-where $c^{-\tr}$ is the inverse transposed matrix of $c$.
+Let $s,t \in V$ be two vectors and let $c \in \GL(V)$ be arbitrary. 
+Then $T(s,t)^c = T(sc^{-\tr},tc)$,
+where $c^{-\tr}$ is the inverse transposed matrix of $c$, written
+with respect to the basis $\B'$.
 \end{lemma}
+\proof
+$xT(s,t)^c = x + (xc^{-1}|s)tc = x + (x|sc^{-\tr})tc$ for $x \in V$. 
+\proofend
 
 \begin{lemma}
 \label{powertrans}
-Let $T : V \to V$ be the transvection with $xT = x+(x|s)t$ for all
-$x \in V$ and two fixed vectors $s,t \in V$ with $(t|s)=0$, and let 
-$1 \le k \le p-1$. Then $T^k$ is the transvection
-with $xT^k = x + (x|s)(k\cdot 1_{GF(q)}) t$.
+Let $s,t \in V$ be two vectors with $(t|s)=0$ and let 
+$0 \le k \le p-1$. Then $T(s,t)^k = T(s,kt)$.
 \end{lemma}
 \proof Since $(t|s)=0$, repeated application of $T$ just adds the same
 scalar multiple of $t$ repeatedly $k$ times.
@@ -584,15 +590,13 @@ scalar multiple of $t$ repeatedly $k$ times.
 \begin{lemma}
 \label{lincombtrans}
 Let $w_1, w_2, \ldots, w_k \in V$ and $u \in V$ be vectors with 
-$(u|w_i)=0$ and let $T_i$ for $1 \le
-i \le k$ be the transvection with $xT_i = x + (x|w_i)u$ for $x \in V$
-and $1 \le i \le k$. 
-Then the $T_i$ commute pairwise and their product is the transvection $T$
-with $xT = x + (x|\sum_{i=1}^k w_i) u$ for $x \in V$.
+$(u|w_i)=0$
+Then the $T(w_i,u)$ for $1 \le i \le k$ commute pairwise and their 
+product is the transvection $T(\sum_{i=1}^k w_i,u)$.
 \end{lemma}
-\proof The vector $u$ is fixed by all $T_i$ and all $T_i$ only modify
+\proof The vector $u$ is fixed by all $T(w_i,u)$ and they all modify
 an $x$ by adding a scalar multiple of $u$. Therefore linearity
-immediately implies that all $T_i$ commute and that $T$ adds
+immediately implies that all $T(w_i,u)$ commute and that their product adds
 $(x|\sum_{i=1}^k w_i)u$ to an $x \in V$.
 \proofend
 
@@ -648,3 +652,10 @@ R.A.~Wilson et~al., \emph{A {W}orld-{W}ide-{W}eb {A}tlas of finite group
 \end{thebibliography}
 
 \end{document}         
+%We denote by $(-|-)$
+%the standard scalar product on $V$ with respect to the basis $\B$,
+%that is, $(v_i|v_j) = \delta_{i,j}$. Later we define a new basis 
+%$\B' = (v'_1, \ldots, v'_d)$ and will then write $(-|-)'$ for the scalar
+%product with $(v'_i|v'_j)' = \delta_{i,j}$.
+%For two vectors $s,t \in V$ we denote the transvection $x \mapsto x + (x|s)t$
+%by $T_{s,t}$ and likewise $T'_{s,t} : x \mapsto x + (x|s)'t$.
