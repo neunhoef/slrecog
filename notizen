@@ -1,0 +1,38 @@
+U,V < W
+
+dim U + dim V = dim (U \cap V) + dim (U+V)
+
+proof:
+  U \oplus V  --> U+V
+  (u,v)       --> u+v
+is surjective. The left dimension is 
+  dim U + dim V
+the right dimension is dim (U+V), the kernel is
+  {(x,-x) | x \in U \cap V}
+which has dimension dim(U \cap V).
+
+dim V = d
+dim V_n = n
+dim Fix(c) = d-n+1
+dim Fix(H) = d-n
+V = V_n \oplus Fix(H)
+dim V_n c = n
+
+assume: dim (V_n + V_n c) = 2n-1
+    ==> dim (V_n \cap V_n c) = 1
+    ==> since Fix(c) \cap V_n \subseteq V_n \cap V_n c
+        and is at least 1-dimensional ( dim Fix(c) + dim V_n = d+1 )
+        it is 1-dimensional and V_n \cap V_n c = Fix(c) \cap V_n
+
+Need: dim (Fix(H) \cap Fix(c)) = d-2n+1
+      = d-n + d-n+1 - dim( Fix(H) + Fix(c) )
+      = d-n + d-n+1 - d = d-2n+1
+
+assume: dim (V_n + V_n c) = d < 2n-1
+    ==> dim (V_n \cap V_n c) = 2n-d > 1
+    ==> since Fix(c) \cap V_n \subseteq V_n \cap V_n c
+        and is at least 1-dimensional ( dim Fix(c) + dim V_n = d+1 )
+        it is >=1-dimensional and ...
+
+
+
