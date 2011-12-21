@@ -398,7 +398,9 @@ we are targetting in the current step.
 
 We denote by $(-|-)$
 the standard scalar product on $V$ with respect to the basis $\B$,
-that is, $(v_i|v_j) = \delta_{i,j}$.
+that is, $(v_i|v_j) = \delta_{i,j}$. Later we define a new basis 
+$\B' = (v'_1, \ldots, v'_d)$ and will then write $(-|-)'$ for the scalar
+product with $(v'_i|v'_j)' = \delta_{i,j}$.
 For an element $g$ of $G$ we write
 $\Fix g$ for its fixed space, and for a subgroup $K$ of $G$ we write
 $\Fix K$ for the subspace of vectors which are fixed by all elements
@@ -406,6 +408,8 @@ of $K$.
 Let $V_n := \left< v_1, v_2, \ldots, v_n\right>$ and $F_{d-n} :=
 \left< v_{n+1}, \ldots, v_d \right>$. Note that $H$ acts on $V_n$ as
 $\SL(V_n)$ and that $F_{d-n} = \Fix H$.
+For two vectors $s,t \in V$ we denote the transvection $x \mapsto x + (x|s)t$
+by $T_{s,t}$ and likewise $T'_{s,t} : x \mapsto x + (x|s)'t$.
 
 \smallskip
 \begin{enumerate}
@@ -456,8 +460,9 @@ For $n' < 2n-1$ it is possible that $V_n \cap \Fix c$ has higher
 dimension than $1$.
 
 Note that there is one more condition on $c$, however, we can only
-formulate this in step 5. If it then turns out to be not fulfilled,
+formulate this in step 5. If that condition then turns out to be not fulfilled,
 we simply go back to this step and try another $c_1$.
+
 \item Modify $c$ such that it fixes $v_n$.
 
 In this step we slightly modify $c$ in a controlled way, such that
@@ -473,7 +478,7 @@ $(v | v_n) = 1$, which allows us to write $T$ as a product of
 elements of the form $E_{n,i}(\beta)$ for $1 \le i \le n-1$, 
 which are easily expressed
 in terms of the standard generators (see Lemma~\ref{transvecs}). 
-If $(v|v_n) = 0$, we find an $i$ with $(vE_{i,n}|v_n) \neq 0$ and
+If $(v|v_n) = 0$, we find an $i$ with $(vE_{i,n}(1)|v_n) \neq 0$ and
 then a $T' \in H$ with $v_n T' = vE_{i,n}(1)$ as above,
 replacing $v$ with a scalar multiple as needed. Finally, we set
 $T := T' E_{i,n}(1)^{-1}$.
@@ -501,15 +506,15 @@ for $\SL(n,q)$ with respect to $\B'$.
 
 From this stage on we express all our matrices in the new basis $\B'$,
 so we in particular express $c$ with respect to $\B'$.
-Also, our notation $(-|-)$ for the scalar product refers from now on
-to the basis $\B'$, that is, $(v'_i | v'_j) = \delta_{i,j}$.
-\item Consider the transvections $E_{j,n}(\varepsilon_i)^c$ 
+Also, from now on we use the scalar product $(-|-)'$ with 
+$(v'_i|v'_j)' = \delta_{i,j}$. Note that $E_{j,n}(\epsilon) =
+T'_{v'_j,\epsilon v'_n}$ and $E_{n,j}(\epsilon) = T'_{v'_n,\epsilon
+v'_j}$ for all $j < n$.
+
+\item Consider the transvections $T'_{v'_j,v'_n}(\varepsilon_i)^c$ 
 for $1 \le i \le e$ and $1 \le j \le n-1$.
 
-We have: $xE_{j,n}(\varepsilon_i) = x + (x|v_j) \varepsilon_i v_n$ 
-for all $x \in V$
-and for $1 \le j \le n-1$, so $E_{j,n}(\varepsilon)$ is a transvection.
-Therefore, by Lemma~\ref{conjtransv}, 
+By Lemma~\ref{conjtransv}, 
 the conjugate $E_{j,n}(\varepsilon_i)^c$ is the transvection
 with $xE_{j,n}(\varepsilon_i)^c = x + (x|v_ic^{-\tr})\varepsilon_i v_n$ 
 for $x \in V$, since $v_nc = v_n$. Note that all
@@ -557,11 +562,11 @@ by $p-1$. \fixme{TODO: Make this explicit.}
 
 \begin{lemma}
 \label{conjtransv}
-Let $T : V \to V$ be the transvection with $xT = x+(x|s)t$ for all
-$x \in V$ and two fixed vectors $s,t \in V$, and let 
-$c \in \GL(V)$ be arbitrary. 
-Then $T^c$ is the transvection with $xT^c = x + (xc^{-1}|s)tc
-= x + (x|sc^{-\tr})tc$ for $x \in V$, 
+Let $(-|-)$ be a non-degenerate bilinear form on $V$ and $T_{s,t}:V
+\to V$ be the transvection on $V$ with $xT_{s,t} = x+(x|s)t$ for $x
+\in V$, and let $c \in \GL(V)$ be arbitrary. 
+Then $T_{s,t}^c$ is the transvection with 
+$xT_{s,t}^c = x + (xc^{-1}|s)tc = x + (x|sc^{-\tr})tc$ for $x \in V$, 
 where $c^{-\tr}$ is the inverse transposed matrix of $c$.
 \end{lemma}
 
