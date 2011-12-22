@@ -449,8 +449,24 @@ the second condition. Indeed, in this
 case the dimension of $V_n \cap \Fix c$
 will always be equal to~$1$, since $V_n \cap \Fix c \subseteq V_n \cap V_n
 c$ and the latter has dimension $1$ by the first condition.
-For $n' < 2n-1$ it is possible that $V_n \cap \Fix c$ has higher 
+For $n' = d < 2n-1$ it is possible that $V_n \cap \Fix c$ has higher 
 dimension than $1$.
+
+Let $W := V_n + V_n c$ with $\dim W = n'$. We claim that $W$ is invariant
+under the action of $c$.
+If $n'=d$ then this is trivial, otherwise we have $n'=2n-1 < d$.
+Then we have $V_n + \Fix c = V$, again using Lemma~\ref{dimformula}.
+Thus, $W + \Fix c = V$ as well which implies that $\dim(W \cap \Fix c)
+= (2n-1)+(d-n+1)-d = n$. However, since $\dim(V_n \cap (W \cap \Fix c))=1$,
+we get $V_n + (W \cap \Fix c) = W$. Therefore we can choose a basis
+of $W$ as follows: Pick a non-zero vector $v \in V_n \cap \Fix c$, select
+$n-1$ vectors from $(v_1, \ldots, v_n)$ to extend this to a basis
+of $V_n$ and then choose $n-1$ vectors from $W \cap \Fix c$ to extend this
+to a basis of $W$. We immediately read off from this basis that $W$ is
+invariant under the action of $c$.
+
+We conclude that $V_n + V_n c = V_n + V_n c^{-1}$ since both have dimension
+$n'$ and $c^{-1}$ is a finite power of $c$.
 
 Note that there is one more condition on $c$, however, we can only
 formulate this in step 5. If that condition then turns out to be not fulfilled,
@@ -513,11 +529,15 @@ to $\B'$ is nothing but the transvection $T(\beta v_i,v_j)$.
 \item Consider the transvections $T(\varepsilon_i v'_j,v'_n)^c$ 
 for $1 \le i \le e$ and $1 \le j \le n-1$.
 
+The purpose of this step is to construct the elements
+$E_{j,n}(\varepsilon_i)$ for $1 \le i \le e$ and $n+1 \le j \le n'$
+with respect to the basis $\B'$.
+
 By Lemma~\ref{conjtransv}, 
 the conjugate $T(\varepsilon_i v'_j,v'_n)^c$ is the transvection
-with $T(\varepsilon_i v'_j c^{-\tr},v'_m)$,
-since $v_nc = v_n$. Note that all
-$T(\varepsilon_i v'_j,v'_n)^c$ fix $v'_n$, since $c$ and $c^{-1}$ and
+$T(\varepsilon_i v'_j c^{-\tr},v'_n)$,
+since $v'_nc = v'_n$. Note that all
+$T(\varepsilon_i v'_j,v'_n)^c$ fix $v'_n$, since $c$ and
 $T(\varepsilon_i v'_j,v'_n)$ fix $v'_n$, so $(v'_n|v'_jc^{-\tr}) = 0$ 
 for $1 \le j \le n-1$.
 
@@ -525,15 +545,34 @@ Thus, the vectors $\varepsilon_i v'_j$ and $\varepsilon_i v'_j c^{-\tr}$
 for $1 \le i \le e$ and $1 \le j \le n-1$
 are all orthogonal to $v_n$ and we know for all 
 vectors $w$ in this list an SLP for $T(w,v'_n)$.
-By our conditions on $c$ from step 2.~we know that they span the subspace
-$\left< v'_1, \ldots, v'_{n-1}, v'_{n+1}, \ldots, v'_{n'}\right>$, thus,
-using Lemma~\ref{lincombtrans} we can express all
-$T(\epsilon_i v'_j,v'_n)$ for $1 \le i \le e$ and $n+1 \le j \le n'$.
+If these vectors do not span the subspace
+$\left< v'_1, \ldots, v'_{n-1}, v'_{n+1}, \ldots, v'_{n'}\right>$, we
+simply go back to step 2.~and try another random element $c_1$.
+Otherwise, using Lemmas~\ref{powertrans} and~\ref{lincombtrans} we
+can express all $T(\varepsilon_i v'_j,v'_n)$ for $1 \le i \le e$ and
+$n+1 \le j \le n'$. This means that we have constructed the elements
+$E_{j,n}(\varepsilon_i)$ with respect to the basis $\B'$.
 
-\item Put together transvections $E_{i,n}(\varepsilon)$ for $n+1 \le i \le n'$.
-\item Consider transvections $E_{n,i}(\varepsilon)^c$ for $1 \le i \le n-1$.
+Note that we have to do linear algebra computations 
+over the prime field $GF(p)$ here,
+but once again the results of these computations just tell us, how 
+to write an SLP for these transvections.
 
-These yield transvections $E_{n,i}(\varepsilon)$ for $n+1 \le i \le n'$.
+\item Consider the transvections $T(v'_n,\varepsilon_i v'_j)^c$ for
+$1 \le i \le e$ and $1 \le j \le n-1$.
+
+The purpose of this step is to construct the elements
+$E_{n,j}(\varepsilon_i)$ for $1 \le i \le e$ and $n+1 \le j \le n'$
+with respect to the basis $\B'$.
+
+By Lemma~\ref{conjtransv}, 
+the conjugate $T(v'_n,\varepsilon_i v'_j)^c$ is the transvection
+$T(v'_n c^{-\tr},\varepsilon_i v'_j c)$,
+since $v'_nc = v'_n$. For each of these we first want to modify them,
+such that they fix all basis vectors $v'_k$ for $k \neq n$. If
+$\lambda := (v'_k | v'_n c^{-\tr}) = (v'_k c^{-1} | v'_n) \neq 0$, then
+we just left-multiply $T(v'_n c^{-\tr},\varepsilon_i v'_j c)$ by
+??? $\ldots$
 
 \item Put together new $n'$- and $(n'-1)$-cycles.
 
