@@ -331,9 +331,9 @@ relative prime to all other $\deg(f_j(t))$
 
 In this section we describe and analyze the second part of the
 algorithm, starting with a subgroup isomorphic to $\SL(2,q)$ and
-ending with nice generators for the whole group $G$. The crucial
+ending with standard generators for the whole group $G$. The crucial
 result is Theorem~\ref{double}, which provides the step to essentially
-double the Lie rank of the subgroup for which we have nice generators.
+double the Lie rank of the subgroup for which we have standard generators.
 
 For this section all our notation from previous sections remains in place.
 
@@ -341,15 +341,15 @@ For this section all our notation from previous sections remains in place.
 \label{double}
 Let $2 \le n < d$ with $n$ odd when $n > 2$, 
 let $\B := (v_1, v_2, \ldots, v_d)$ be a basis of $V$
-and denote by $W_n$ the subspace of $V$ spanned by $(v_1, \ldots, v_n)$. 
+and denote by $V_n$ the subspace of $V$ spanned by $(v_1, \ldots, v_n)$. 
 Furthermore, let $P$ be a straight-line program
-from $X$ to a generating set $Y_n$, which is a set of standard
+from $X$ to a set $Y_n$, which is a set of standard
 generators for $\SL(n,q)$ with respect to the basis $\B$.
 Let $n' := \min\{ 2n-1, d\}$.
 
 Then there is an algorithm that computes a basis $\B' = (v'_1, \ldots,
 v'_d)$ of $V$ together with a straight-line program $P'$ from $X$
-to a generating set $Y_{n'}$, which is a set of standard generators
+to a set $Y_{n'}$, which is a set of standard generators
 for $\SL(n',q)$ with respect to the basis $\B'$.
 
 The running time of the algorithm is $O(\ldots)$ where $\xi$ is the
@@ -366,35 +366,37 @@ correctness and the claims about running time and length of
 straight-line programs.
 
 \smallskip
-Here is the general idea of the algorithm: With the help of a random 
-element of $G$ we construct an element $c$ that conjugates the copy $H$
-of $\SL(n,q)$ for which we have standard generators to a subgroup $H'=H^c$ of
-$G$ which the following property:
+Here is the general idea of the algorithm. We construct an element $c \in G$ that 
+conjugates the copy $H=\SL(V_n)$
+of $\SL(n,q)$, for which we have standard generators, to a subgroup $H'=H^c$ of
+$G$ with the following property:
 \begin{itemize}
-\item The $n$-dimensional spaces on which $H$ and $H'$ actually act 
-intersect in an at least $1$-dimensional space.
+\item The $n$-dimensional spaces $V_n$ and $V_nc$ on which $H$ and $H'$ actually act 
+intersect in a subspace of dimension $\max \{ 1, 2n-d \}$.
 \end{itemize}
-This setup allows us to choose a basis of the new $n'$-dimensional
-subspace of $V$ very carefully such that we can use $c$-conjugates of certain
+This setup allows us to choose a basis of the $n'$-dimensional
+subspace $V_{n'}=V_n+V_nc$ of $V$ very carefully such that we can use 
+$c$-conjugates of certain
 transvections in $H$ to put together standard generators for $\SL(n',q)$
 with respect to the new basis. At the same time this allows us to conclude 
 that the group $\left<H,H'\right>$ is indeed isomorphic to $\SL(n',q)$,
 
-Note that we do not have to construct the actual matrices of our standard
-generators, since we only need a straight line program to express them in the
-original generators anyway. However, since we know exactly to which
-matrices with respect to our basis $\B$ these standard generators correspond,
-we can actually do linear algebra computations to decide what products
-and inversions we put into the resulting straight line program.
+We note that we write an SLP to the standard generators $Y_{n'}$ of $\SL(n',q)$,
+but we do not evaluate this SLP: we know a priori what matrices correspond to the 
+elements of $Y_{n'}$ in the basis $\B'$. Knowing these matrices allows us to perform
+linear algebra (Gaussian elimination, and multiplication of vectors and matrices by the 
+elements of $Y_n$ and $Y_{n'}$). Moreover, since the elements of $Y_n$ and $Y_{n'}$ 
+correspond to sparse matrices, the result of a multiplication by such elements can be 
+obtained faster than the general cost of matrix multiplication. 
 To ease the presentation, we use expressions like ``construct an element
 as a certain product'', but we always just mean ``write the construction
-into the resulting straight line program''.
+into the resulting straight-line program''.
 
 One last comment is in order before we begin the description of the
 algorithm. The generic case is that $n'=2n-1$ and $d$ is even bigger.
 However, we can handle the case $2n-1 \ge d$ with the very same
 methods, which is why we introduce the variable $n'$ as the dimension
-we are targetting in the current step.
+we are targeting in the current step.
 
 For an element $g$ of $G$ we write
 $\Fix g$ for its fixed space, and for a subgroup $K$ of $G$ we write
@@ -408,69 +410,67 @@ $\SL(V_n)$ and that $F_{d-n} = \Fix H$.
 \begin{enumerate}
 \item Construct an element $s$ with fixed space of dimension $d-n+1$.
 
-If $n=2$, we take $s := E_{1,2}(1)$ which is one of our known standard
-generators, its fixed space is $\left< v_2, \ldots, v_d\right>$ and thus
-has the right dimension. If $n > 2$, then it is by assumption odd.
+The element $s$ can be chosen as one of the standard generators of $\SL(n,q)$. 
+If $n=2$, then we take $s := E_{1,2}(1)$. Its fixed space is 
+$\left< v_2, \ldots, v_d\right>$ and thus
+has the right dimension. If $n > 2$, then by assumption $n$ is odd.
 In this case we take for $s$ the $(n-1)$-cycle if the characteristic $p$
-is odd, and the $n$-cycle if it is odd. Both are amongst our
-standard generators, so that we already have an SLP for them. The fixed
+is odd, and the $n$-cycle if $p=2$. The fixed
 space is $\left< v_1, v_{n+1}, v_{n+2}, \ldots, v_d\right>$ in the first
 case and $\left< v_1+v_2+\cdots+v_n, v_{n+1}, \ldots, v_d\right>$ in the
-second case.
+second case. CAN WE ALWAYS TAKE THE $n$-CYCLE?
 
 We emphasise once more that the element $s$ is ``constructed'' as an SLP in
 the given standard generators of $\SL(n,q)$, but can at the same time be
-written down explicitly as a matrix with respect to the basis $\B$ at
-essentially no cost.
-\item Find a good random element $c$.
+written down explicitly as a matrix with respect to the basis $\B$ at a
+small cost $O(d^2)$.
+\item Construct an element $c$ that satisfies the conditions $(\alpha)$ and $(\beta)$ 
+below.
 
 The idea for this step is to create a uniformly distributed random element 
 $c_1$ in $G$ and then take $c := s^{c_1}$. This is one of the few places
 in this algorithm where we actually have to multiply $(d \times
-d)$-matrices, since we have to base change $c_1$ into basis $\B$ and
-then actually write down the matrix of $c$ with respect to $\B$. This
-is necessary to perform the following linear algebra computations.
+d)$-matrices, since $c_1$ is created as a matrix in the input basis where $X$ is given,
+and we have to construct the matrix of $c_1$ and $c$ in the basis $\B$. 
+This is necessary to perform the following linear algebra computations.
 
 Since $c$ is a conjugate of $s$,
-it has a fixed space of dimension $d-n+1$ as well, we denote this space
-by $\Fix c$. We need the following
+its fixed point space $\Fix c$ has dimension $d-n+1$. We need the following
 conditions on $c$, which we fulfill by repeatedly trying elements $c_1$
-until they are satisfied:
+until the conditions are satisfied:
 \begin{itemize}
-\item $\dim(V_n + V_n c) = n'$,
-\item if $n' < d$ then $\dim(F_{d-n} + \Fix c) = d$.
+\item[$(\alpha)$] $\dim(V_n + V_n c) = n'$.
+\item[$(\beta)$] If $n' < d$ then $\dim(F_{d-n} + \Fix c) = d$.
 \end{itemize}
-These conditions have some immediate consequences using
-Lemma~\ref{dimformula}: Since $\dim(\Fix c) =
+By Lemma~\ref{dimformula}, these conditions have some immediate consequences. 
+Since $\dim(\Fix c) =
 d-n+1$ and $\dim(V_n) = n$, we get $\dim(V_n \cap \Fix c) \ge
-1$. In the case that $n' < d$, we have
-$\dim(F_{d-n} \cap \Fix c) = (d-n) + (d-n+1) - d = d-2n+1 = d-n'$ by 
-the second condition. Indeed, in this
-case the dimension of $V_n \cap \Fix c$
-will always be equal to~$1$, since $V_n \cap \Fix c \subseteq V_n \cap V_n
-c$ and the latter has dimension $1$ by the first condition.
-For $n' = d < 2n-1$ it is possible that $V_n \cap \Fix c$ has higher 
-dimension than $1$.
+1$. In the case $n' < d$, $(\beta)$ implies that 
+$\dim(F_{d-n} \cap \Fix c) = (d-n) + (d-n+1) - d = d-2n+1 = d-n'$. Moreover, 
+the dimension of $V_n \cap \Fix c$
+will be equal to~$1$, since $V_n \cap \Fix c \subseteq V_n \cap V_n
+c$ and the latter has dimension $1$ by $(\alpha)$. 
+If $n' = d < 2n-1$ then it is possible that $\dim(V_n \cap \Fix c) >1$.
 
-Let $W := V_n + V_n c$ with $\dim W = n'$. We claim that $W$ is invariant
+Let $V_{n'} := V_n + V_n c$ with $\dim(V_{n'})= n'$. We claim that $V_{n'}$ is invariant
 under the action of $c$.
-If $n'=d$ then this is trivial, otherwise we have $n'=2n-1 < d$.
+If $n'=d$ then this is trivial, so suppose that  $n'=2n-1 < d$.
 Then we have $V_n + \Fix c = V$, again using Lemma~\ref{dimformula}.
-Thus, $W + \Fix c = V$ as well which implies that $\dim(W \cap \Fix c)
-= (2n-1)+(d-n+1)-d = n$. However, since $\dim(V_n \cap (W \cap \Fix c))=1$,
-we get $V_n + (W \cap \Fix c) = W$. Therefore we can choose a basis
-of $W$ as follows: Pick a non-zero vector $v \in V_n \cap \Fix c$, select
+Thus, $V_{n'} + \Fix c = V$ as well which implies that $\dim(V_{n'} \cap \Fix c)
+= (2n-1)+(d-n+1)-d = n$. However, since $\dim(V_n \cap (V_{n'} \cap \Fix c))=1$,
+we get $V_n + (V_{n'} \cap \Fix c) = V_{n'}$. Therefore we can choose a basis
+of $V_{n'}$ as follows: Pick a non-zero vector $v \in V_n \cap \Fix c$, select
 $n-1$ vectors from $(v_1, \ldots, v_n)$ to extend this to a basis
-of $V_n$ and then choose $n-1$ vectors from $W \cap \Fix c$ to extend this
-to a basis of $W$. We immediately read off from this basis that $W$ is
+of $V_n$ and then choose $n-1$ vectors from $V_{n'} \cap \Fix c$ to extend this
+to a basis of $V_{n'}$. We immediately read off from this basis that $V_{n'}$ is
 invariant under the action of $c$.
 
 We conclude that $V_n + V_n c = V_n + V_n c^{-1}$ since both have dimension
 $n'$ and $c^{-1}$ is a finite power of $c$.
 
-Note that there is one more condition on $c$, however, we can only
-formulate this in step 5. If that condition then turns out to be not fulfilled,
-we simply go back to this step and try another $c_1$.
+Note that there is one more condition on $c$, which, however, we can only
+formulate in step 5. If that condition then turns out to be not fulfilled,
+we simply come back to step 2 and try another $c_1$.
 
 \item Modify $c$ such that it fixes $v_n$.
 
@@ -478,8 +478,11 @@ In this step we slightly modify $c$ in a controlled way, such that
 $V_n \cap \Fix c$ contains the basis vector $v_n$. We do this by expressing
 an element $T \in H$ in terms of our standard generators with $v_nT
 = v$, where $v$ is any non-zero vector in $V_n \cap \Fix c$,
-and then setting replacing $c$ by $Tc T^{-1}$. This still fulfills
-the conditions in step 2.~since $T \in H$ \fixme{Is this true???}.
+and then replacing $c$ by $Tc T^{-1}$. This new element still fulfills 
+the conditions $(\alpha)$ and $(\beta)$ since $V_nT=V_n$ and so 
+$\dim(V_n+V_nTcT^{-1})=\dim(V_nT+V_nTc)=\dim(V_n+V_nc)=n'$ and 
+$(\alpha)$ holds. Also, $TF_{n-d}T^{-1}=F_{n-d}$ and so $\dim(\Fix {TcT^{-1}} +F_{n-d})
+=\dim(\Fix {TcT^{-1}} +TF_{n-d}T^{-1})=\dim(\Fix c +F_{n-d})=d$ and $(\beta)$ holds.
 
 To find $T$, we proceed as follows: Let $0 \neq v \in V_n \cap \Fix c$.
 Let $v = \sum_{j=1}^d \lambda_j v_i$. If $\lambda_n \neq 0$, 
@@ -507,22 +510,23 @@ We store the indices $1 \le i_1 < \cdots < i_{n'-n} \le n-1$ of the
 selected vectors for later use. Finally, in the case $n' < d$, that is,
 $n'=2n-1$, we extend $(v'_1, \ldots, v'_{n'})$ to a basis $\B' = (v'_1,
 \ldots, v'_d)$ of $V$ by choosing a basis of $F_{d-n} \cap \Fix c$, which
-is possible by the second condition on $c$ in step 2. Note that $V_n =
-\left< v'_1, \ldots, v'_n\right>$ and $V_n + V_nc = \left< v'_1, \ldots,
-v'_{n'}\right>$ and $\left< v'_{n+1}, \ldots, v'_d\right> \subseteq \Fix
-H$. Note that the latter condition ensures that our standard generators
+is possible by the condition $(\beta)$ in step 2. Note that $V_n =
+\left< v'_1, \ldots, v'_n\right>$, $V_n + V_nc = \left< v'_1, \ldots,
+v'_{n'}\right>$, and $\left< v'_{n+1}, \ldots, v'_d\right> \subseteq \Fix
+H$. Note that the first and last of these properties ensure that our standard generators
 for $\SL(n,q)$ with respect to $\B$ are indeed also standard generators
 for $\SL(n,q)$ with respect to $\B'$.
 \end{enumerate}
 
 \noindent
-From this stage on we imagine all our matrices to be expressed in the
-new basis $\B'$ and we conjugate $c$ by the base change matrix between
+From this point on, we consider all our matrices to be expressed in the
+new basis $\B'$. For the standard generators of $\SL(n,q)$, there is nothing to do, while 
+the matrix of $c$ has to be conjugated by the base change matrix between
 $\B$ and $\B'$. We denote by $(-|-)$ the standard scalar product on $V$
 with respect to the basis $\B'$, that is, $(v'_i|v'_j) = \delta_{i,j}$.
-For two vectors $s,t \in V$ we denote the transvection $x \mapsto x +
+For two linearly independent vectors $s,t \in V$, we denote the transvection $x \mapsto x +
 (x|s)t$ by $T(s,t)$. Note that the matrix $E_{i,j}(\beta)$ with respect
-to $\B'$ is nothing but the transvection $T(\beta v_i,v_j)$.
+to $\B'$ is equal to the matrix of the transvection $T(\beta v_i,v_j)$.
 
 \begin{enumerate}
 \setcounter{enumi}{4}
@@ -547,7 +551,7 @@ are all orthogonal to $v_n$ and we know for all
 vectors $w$ in this list an SLP for $T(w,v'_n)$.
 If these vectors do not span the subspace
 $\left< v'_1, \ldots, v'_{n-1}, v'_{n+1}, \ldots, v'_{n'}\right>$, we
-simply go back to step 2.~and try another random element $c_1$.
+simply go back to step 2~and try another random element $c_1$.
 Otherwise, using Lemmas~\ref{powertrans} and~\ref{lincombtrans} we
 can express all $T(\varepsilon_i v'_j,v'_n)$ for $1 \le i \le e$ and
 $n+1 \le j \le n'$. This means that we have constructed the elements
@@ -555,7 +559,7 @@ $E_{j,n}(\varepsilon_i)$ with respect to the basis $\B'$.
 
 Note that we have to do linear algebra computations 
 over the prime field $GF(p)$ here,
-but once again the results of these computations just tell us, how 
+but once again we use the results of the computations only 
 to write an SLP for these transvections.
 
 \item Consider the transvections $T(v'_n,\varepsilon_i v'_j)^c$ for
@@ -586,14 +590,14 @@ In the following, we collect a few technical lemmas which are used
 elsewhere. Recall our notation that $V$ is a $d$-dimensional $GF(q)$-vector
 space, $\B' = (v'_1, v'_2, \ldots, v'_d)$ is a basis of $V$ and
 $(-|-)$ denotes the standard scalar product on $V$ with $(v'_i|v'_j) =
-\delta_{i,j}$. Finally, for two vectors $s,t \in V$ the
+\delta_{i,j}$. Finally, for two linearly independent vectors $s,t \in V$ the
 map $T(s,t)$ is the transvection with $xT(s,t) = x + (x|s)t$.
 
 \begin{lemma}
 \label{dimformula}
 Let $U,W$ be two subspaces of the finite-dimensional vector space $V$.
 Then
-\[ \dim U + \dim V = \dim(U+V) + \dim(U \cap V). \]
+\[ \dim (U) + \dim (V) = \dim(U+V) + \dim(U \cap V). \]
 \end{lemma}
 \proof Follows directly from the dimension formula for linear maps.
 \proofend
@@ -635,7 +639,8 @@ product is the transvection $T(\sum_{i=1}^k w_i,u)$.
 \end{lemma}
 \proof The vector $u$ is fixed by all $T(w_i,u)$ and they all modify
 an $x$ by adding a scalar multiple of $u$. Therefore linearity
-immediately implies that all $T(w_i,u)$ commute and that their product adds
+immediately implies that all $T(w_i,u)$ commute and, for any $x \in V$,
+their product adds
 $(x|\sum_{i=1}^k w_i)u$ to an $x \in V$.
 \proofend
 
@@ -671,9 +676,14 @@ C.R.~Leedham-Green. \emph{The computational matrix group project.}
   Ohio State Univ. Math. Res. Inst. Publ., 8, de Gruyter, Berlin, 2001.
 
 \bibitem{NS06}
-M.~Neunh{\"o}ffer and {\'A}kos Seress.
+M.~Neunh{\"o}ffer and {\'A}. Seress.
   \emph{A data structure for a uniform approach to computations with finite 
   groups.} ISSAC 2006, 254--261, ACM, New York, 2006. 
+
+\bibitem{NS2}
+M.~Neunh{\"o}ffer and {\'A}. Seress.
+\emph{Constructive recognition of classical groups in their natural representation.}
+In preparation.
 
 \bibitem{OB09}
 E.A.~O'Brien. \emph{Algorithms for matrix groups.}
